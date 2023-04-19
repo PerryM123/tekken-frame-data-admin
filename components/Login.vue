@@ -1,5 +1,6 @@
 <!-- Question: what's the common way to order template & script & style?? -->
-<script>
+<script lang="ts">
+import axios from 'axios'
 export default {
   name: 'LoginUser',
   data() {
