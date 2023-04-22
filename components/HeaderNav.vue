@@ -2,9 +2,9 @@
 export default {
   name: 'HeaderNav',
   data() {
-    return {}
-  },
-}
+    return {};
+  }
+};
 </script>
 <template>
   <nav class="">

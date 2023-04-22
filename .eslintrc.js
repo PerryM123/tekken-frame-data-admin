@@ -3,14 +3,16 @@ module.exports = {
   env: {
     browser: true,
     'jest/globals': true,
-    node: true,
+    node: true
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
     'plugin:nuxt/recommended',
-    'prettier',
+    'prettier'
   ],
   plugins: ['jest'],
-  // add your custom rules here
-  rules: {},
-}
+  rules: {
+    // TODO: ルールを決めよう
+    // 'vue/require-default-prop': 2
+  }
+};

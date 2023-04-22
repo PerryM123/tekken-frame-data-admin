@@ -7,11 +7,11 @@
 
 <script>
 // TODO: 以下の1行目をエリアスに変更
-import HeaderNav from '../components/HeaderNav.vue'
+import HeaderNav from '../components/HeaderNav.vue';
 export default {
   name: 'Default',
   components: {
-    HeaderNav,
-  },
-}
+    HeaderNav
+  }
+};
 </script>

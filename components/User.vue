@@ -2,9 +2,9 @@
 export default {
   name: 'UserInfo',
   data() {
-    return {}
-  },
-}
+    return {};
+  }
+};
 </script>
 <template>
   <div class="">This is profile</div>
