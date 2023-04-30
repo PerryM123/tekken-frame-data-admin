@@ -1,42 +1,30 @@
-# Nuxt 3 Minimal Starter
+# Tekken Frame Data Admin ver0.1
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## なぜ作ってるか
 
-## Setup
+TODO
 
-Make sure to install the dependencies:
+## 機能一覧
 
-```bash
-# yarn
-yarn install
+TODO
 
-# npm
-npm install
+## 目的
 
-# pnpm
-pnpm install
+Vue3（Composition API） と Nuxt を身につけるように tekken-frame-data （[tekken-frame-data フロントエンド](https://github.com/PerryM123/tekken-frame-data) と [tekken-frame-data バックエンド](https://github.com/PerryM123/tekken-frame-data-backend)） の管理画面を実装しました。
+
+## Getting Started
+
+```
+$ git clone git@github.com:PerryM123/tekken-frame-data-admin.git
+$ cd tekken-frame-data-admin
+$ yarn
+$ yarn dev
 ```
 
-## Development Server
+## Techonogies being used
 
-Start the development server on `http://localhost:3000`
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Admin 管理ページ側（フロントエンド）: NuxtJS（[参考](https://github.com/PerryM123/tekken-frame-data-admin)）
+- Tekken Frame Data アプリ側（フロントエンド）: NextJS（[参考](https://github.com/PerryM123/tekken-frame-data)）
+- サーバーサイド: Express.js （[参考](https://github.com/PerryM123/tekken-frame-data-backend)）
+- コンテナ管理: Docker
+- データベース: MySQL
