@@ -39,6 +39,12 @@ const logInHandler = async () => {
     console.log("submit ok!!!");
     try {
       // TODO: 仮のAPI
+      // const {data, pending, error, refresh} = await useFetch("/api/test/{id}")
+      const { data, pending, error, refresh } = await useFetch("/api/login/", {
+        method: "POST",
+        body: { country: "Japan", isJapanese: true },
+      });
+
       console.log("try");
     } catch (e) {
       console.log("try");
