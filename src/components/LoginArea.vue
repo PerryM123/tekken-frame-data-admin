@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 
 interface Props {
   name: string;
@@ -8,22 +8,22 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  name: "defaultName",
+  name: 'defaultName'
 });
-const userName = ref("");
-const password = ref("");
-const errorMessage = ref("");
+const userName = ref('');
+const password = ref('');
+const errorMessage = ref('');
 const errorInfo = {
   isUserNameEmpty: ref(false),
   isPasswordEmpty: ref(false),
-  isIncorrectPassword: ref(false),
+  isIncorrectPassword: ref(false)
 };
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
   errorInfo.isPasswordEmpty.value = false;
   errorInfo.isIncorrectPassword.value = false;
-  errorMessage.value = "";
+  errorMessage.value = '';
 };
 
 const logInHandler = async () => {
@@ -36,18 +36,18 @@ const logInHandler = async () => {
   }
 
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
-    console.log("submit ok!!!");
+    console.log('submit ok!!!');
     try {
       // TODO: 仮のAPI
       // const {data, pending, error, refresh} = await useFetch("/api/test/{id}")
-      const { data, pending, error, refresh } = await useFetch("/api/login/", {
-        method: "POST",
-        body: { country: "Japan", isJapanese: true },
+      const { data, pending, error, refresh } = await useFetch('/api/login/', {
+        method: 'POST',
+        body: { country: 'Japan', isJapanese: true }
       });
 
-      console.log("try");
+      console.log('try');
     } catch (e) {
-      console.log("try");
+      console.log('try');
     }
   }
   setErrorText();
@@ -55,13 +55,13 @@ const logInHandler = async () => {
 
 const setErrorText = () => {
   if (errorInfo.isUserNameEmpty.value && errorInfo.isPasswordEmpty.value) {
-    errorMessage.value = "Usernameとpasswordは入力必須";
+    errorMessage.value = 'Usernameとpasswordは入力必須';
   } else if (errorInfo.isUserNameEmpty.value) {
-    errorMessage.value = "Usernameは入力必須";
+    errorMessage.value = 'Usernameは入力必須';
   } else if (errorInfo.isPasswordEmpty.value) {
-    errorMessage.value = "Passwordは入力必須";
+    errorMessage.value = 'Passwordは入力必須';
   } else if (errorInfo.isIncorrectPassword.value) {
-    errorMessage.value = "パスワードは一致していません！";
+    errorMessage.value = 'パスワードは一致していません！';
   }
 };
 </script>
@@ -72,14 +72,14 @@ const setErrorText = () => {
       <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
       <p class="inputTitle">User Name</p>
       <input
-        :class="{ errorState: errorInfo.isUserNameEmpty.value }"
         v-model="userName"
+        :class="{ errorState: errorInfo.isUserNameEmpty.value }"
         type="text"
       />
       <p class="inputTitle">Password</p>
       <input
-        :class="{ errorState: errorInfo.isPasswordEmpty.value }"
         v-model="password"
+        :class="{ errorState: errorInfo.isPasswordEmpty.value }"
         type="password"
       />
       <div>

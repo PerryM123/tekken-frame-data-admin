@@ -1,4 +1,4 @@
-import { IErrorResponse } from "~/src/interface/IErrorResponse";
+import { IErrorResponse } from '~/src/interface/IErrorResponse';
 
 type ILogInResponse = {
   isSuccess: boolean;
@@ -10,17 +10,17 @@ export default defineEventHandler(async (event) => {
   try {
     const response: ILogInResponse = await $fetch(
       // TODO: envを利用
-      "http://localhost:8000/api/v1/login",
+      'http://localhost:8000/api/v1/login',
       {
-        method: "POST",
+        method: 'POST',
         body: {
           userName,
-          password,
-        },
+          password
+        }
       }
     );
     return {
-      ...response,
+      ...response
     };
   } catch (error) {
     // TODO: serverログ必須
@@ -28,9 +28,9 @@ export default defineEventHandler(async (event) => {
   }
   const errorResponse: IErrorResponse = {
     errorInfo: {
-      message: "ログインエラー",
-      code: "ERR_logout",
-    },
+      message: 'ログインエラー',
+      code: 'ERR_logout'
+    }
   };
   return errorResponse;
 });

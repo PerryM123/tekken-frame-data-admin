@@ -8,5 +8,5 @@
 </template>
 <script setup>
 // TODO: pageかコンポーネントか分からない
-console.log("home???");
+console.log('home???');
 </script>

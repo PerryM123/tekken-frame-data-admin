@@ -1,17 +1,23 @@
 <script>
 export default {
-  name: "HeaderNav",
+  name: 'HeaderNav',
   data() {
     return {};
-  },
+  }
 };
 </script>
 <template>
   <nav class="">
     <ul>
-      <li><NuxtLink to="/">Home</NuxtLink></li>
-      <li><NuxtLink to="/user">User</NuxtLink></li>
-      <li><NuxtLink to="/login">Login</NuxtLink></li>
+      <li>
+        <NuxtLink to="/"> Home </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/user"> User </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/login"> Login </NuxtLink>
+      </li>
     </ul>
   </nav>
 </template>
