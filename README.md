@@ -23,7 +23,7 @@ $ yarn dev
 
 ## Techonogies being used
 
-- Admin 管理ページ側（フロントエンド）: NuxtJS（[参考](https://github.com/PerryM123/tekken-frame-data-admin)）
+- Admin 管理ページ側（フロントエンド）: Nuxt3 （[参考](https://github.com/PerryM123/tekken-frame-data-admin)）
 - Tekken Frame Data アプリ側（フロントエンド）: NextJS（[参考](https://github.com/PerryM123/tekken-frame-data)）
 - サーバーサイド: Express.js （[参考](https://github.com/PerryM123/tekken-frame-data-backend)）
 - コンテナ管理: Docker
