@@ -1,4 +1,7 @@
-import { IErrorResponse } from '~/src/interface/IErrorResponse';
+import { IErrorResponse } from '@interface/IErrorResponse';
+// TODO: なぜかエリアスでインポートするとエラーが発生
+// import { backendApiUrl } from '@utils/runtimeConfiguration';
+import { backendApiUrl } from '../../utils/runtimeConfig';
 
 type ILogInResponse = {
   isSuccess: boolean;
@@ -8,17 +11,14 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { userName, password } = body;
   try {
-    const response: ILogInResponse = await $fetch(
-      // TODO: envを利用
-      'http://localhost:8000/api/v1/login',
-      {
-        method: 'POST',
-        body: {
-          userName,
-          password
-        }
-      }
-    );
+    const response: ILogInResponse = await $fetch('/api/v1/login', {
+      method: 'POST',
+      body: {
+        userName,
+        password
+      },
+      baseURL: backendApiUrl
+    });
     return {
       ...response
     };

@@ -6,7 +6,3 @@
     </NuxtLayout>
   </div>
 </template>
-<script setup>
-// TODO: pageかコンポーネントか分からない
-console.log('home???');
-</script>

@@ -1,13 +1,13 @@
-// TODO: alias利用は必須
-import { IErrorResponse } from '~/src/interface/IErrorResponse';
+import { IErrorResponse } from '@interface/IErrorResponse';
+// TODO: なぜかエリアスでインポートするとエラーが発生
+// import { backendApiUrl } from '@utils/runtimeConfiguration';
+import { backendApiUrl } from '../../utils/runtimeConfig';
 
 type ILogOutResponse = {
   isSuccess: boolean;
 };
 
 export default defineEventHandler(async (event) => {
-  const runtimeConfig = useRuntimeConfig();
-  const backendApiUrl = runtimeConfig.backendApiUrl;
   try {
     const response: ILogOutResponse = await $fetch('/api/v1/logout', {
       method: 'GET',
