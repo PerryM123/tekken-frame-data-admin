@@ -6,16 +6,19 @@ type ILogOutResponse = {
 };
 
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+  const backendApiUrl = runtimeConfig.backendApiUrl;
   try {
-    const response: ILogOutResponse = await $fetch(
-      // TODO: envを利用
-      'http://localhost:8000/api/v1/logout'
-    );
+    const response: ILogOutResponse = await $fetch('/api/v1/logout', {
+      method: 'GET',
+      baseURL: backendApiUrl
+    });
     return {
       ...response
     };
   } catch (error) {
     // TODO: serverログ必須
+    console.log('catch error: ', error);
   }
   const errorResponse: IErrorResponse = {
     errorInfo: {

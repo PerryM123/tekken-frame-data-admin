@@ -5,6 +5,9 @@ node_modules
 .cache
 .output
 .env
+.env.local
+.env.development
+.env.production
 dist
 .DS_Store
 .eslintcache
