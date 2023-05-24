@@ -38,19 +38,27 @@ const logInHandler = async () => {
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
     console.log('submit ok!!!');
     try {
-      // TODO: 仮のAPI
-      // const {data, pending, error, refresh} = await useFetch("/api/test/{id}")
-      const { data, pending, error, refresh } = await useFetch('/api/login/', {
+      const { data, pending, error, refresh } = await useFetch('/api/login', {
         method: 'POST',
-        body: { country: 'Japan', isJapanese: true }
+        body: { userName, password }
       });
-
-      console.log('try');
     } catch (e) {
-      console.log('try');
+      console.log('e: ', e);
     }
   }
   setErrorText();
+};
+
+const updateHandler = async () => {
+  console.log('---test: updateHandler');
+  const { data, pending, error, refresh } = await useFetch(
+    '/api/framedata/characters/newNameAGAIN',
+    {
+      method: 'PUT',
+      body: { name: 'destiny2' },
+      credentials: 'include'
+    }
+  );
 };
 
 const setErrorText = () => {
@@ -85,10 +93,16 @@ const setErrorText = () => {
       <div>
         <button class="loginButton" @click="logInHandler()">Login</button>
       </div>
+      <div class="putTest">
+        <button class="loginButton" @click="updateHandler()">Put</button>
+      </div>
     </div>
   </div>
 </template>
 <style scoped lang="scss">
+.putTest {
+  margin-top: 10px;
+}
 .loginArea {
   display: flex;
   justify-content: center;
