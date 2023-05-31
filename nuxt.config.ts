@@ -3,12 +3,14 @@ export default defineNuxtConfig({
   devServer: {
     port: 3001
   },
-  rootDir: './src',
+  srcDir: './src',
   runtimeConfig: {
     // SSR側のみ
     backendApiUrl: process.env.BACKEND_API_URL || '',
     sercetApiKey: process.env.SECRET_API_KEY || '',
     // SSR＆CSR側
-    public: {}
+    public: {
+      publicApiUrl: process.env.PUBLIC_API_URL || ''
+    }
   }
 });
