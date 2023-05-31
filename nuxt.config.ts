@@ -13,4 +13,6 @@ export default defineNuxtConfig({
       publicApiUrl: process.env.PUBLIC_API_URL || ''
     }
   }
+  // TODO: alias: https://nuxt.com/docs/api/configuration/nuxt-config#alias
+  // TODO: faviconを設定
 });

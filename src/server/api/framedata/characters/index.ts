@@ -1,17 +1,19 @@
-// TODO: なぜかエリアスでインポートするとエラーが発生
-// import { backendApiUrl } from '@utils/runtimeConfiguration';
-import { backendApiUrl } from '../../../../utils/runtimeConfig';
+import axios from 'axios';
+// TODO: aliasを適応
+import { backendApi } from '~/server/utils/backendApi';
 
 export default defineEventHandler(async (event) => {
-  const response = await fetch(`${backendApiUrl}/api/v1/characters`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+  try {
+    const response = await backendApi('/api/v1/characters', 'GET');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ', error);
+      return 'An unexpected error occurred';
     }
-  });
-  // TODO: responseToRetureの型が分からないから怪しい、、修正必須
-  const responseToReturn = await response.json();
-  return responseToReturn.map((item: any) => {
-    return item;
-  });
+  }
+  // TODO: デフォルトreturnは必須
 });
