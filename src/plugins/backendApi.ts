@@ -3,6 +3,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const baseURL = nuxtApp.$config.backendApiUrl;
   const sercetApiKey = nuxtApp.$config.sercetApiKey;
   console.log('--test: axios.ts: baseURL: ', baseURL);
+  console.log('--test: axios.ts: sercetApiKey: ', sercetApiKey);
   const api = axios.create({
     baseURL,
     headers: {
@@ -11,9 +12,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     timeout: 5000
   });
+  console.log('--test: axios.ts: api: ', api);
   return {
     provide: {
-      api2: api
+      api
     }
   };
 });
