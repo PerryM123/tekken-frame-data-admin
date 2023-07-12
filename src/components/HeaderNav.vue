@@ -18,6 +18,9 @@ export default {
       <li>
         <NuxtLink to="/login"> Login </NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/character-info"> Character Info </NuxtLink>
+      </li>
     </ul>
   </nav>
 </template>
