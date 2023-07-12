@@ -2,5 +2,14 @@
   <Head>
     <Title>Characters Info</Title>
   </Head>
-  <CharactersInfo />
+
+  <div>
+    <h2>Character Info</h2>
+    <ClientOnly>
+      <template #fallback>
+        <img src="loading.gif" />
+      </template>
+      <CharactersInfo />
+    </ClientOnly>
+  </div>
 </template>

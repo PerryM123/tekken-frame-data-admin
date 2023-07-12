@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Ref, ref } from 'vue';
 type ICharacterInfoApi = {
   data: ICharacterInfoData[];
 };
@@ -7,27 +8,24 @@ type ICharacterInfoData = {
   is_complete: boolean;
 };
 const { $publicApi } = useNuxtApp();
+const pageDataRef: Ref = ref(null);
+// TODO: もしAPI通信エラーなどが発生する場合、どこでcatchされるか確認必須
 const { data }: ICharacterInfoApi = await $publicApi.get(
   '/api/framedata/characters'
 );
-console.log('data: ', data);
+pageDataRef.value = data;
+console.log('pageDataRef: ', pageDataRef.value);
 </script>
 <template>
-  <div>
-    <h2>Character Info</h2>
-    <div v-for="(item, key) in data" :key="key" class="characterItem">
-      <p><span class="characterName">Name:</span> {{ item.name }}</p>
-      <p>
-        <span class="characterName">Is Complete:</span>
-        {{ Boolean(item.is_complete) }}
-      </p>
-    </div>
+  <div v-for="(item, key) in pageDataRef" :key="key" class="characterItem">
+    <p><span class="characterName">Name:</span> {{ item.name }}</p>
+    <p>
+      <span class="characterName">Is Complete:</span>
+      {{ Boolean(item.is_complete) }}
+    </p>
   </div>
 </template>
 <style scoped lang="scss">
-a {
-  color: #1b43ef;
-}
 .characterItem {
   border-top: 1px black solid;
 }
