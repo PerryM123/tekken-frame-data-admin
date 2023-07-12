@@ -25,6 +25,7 @@ type Method =
 
 // TODO: backendApiはurlとmethodの引数でいいのかそれともAxiosRequestConfigのobjectにするか検討必須
 export const backendApi = (url: string, method: Method) => {
+  console.log('--test: backendApi');
   return axios.request({
     url: url,
     baseURL: backendApiUrl,

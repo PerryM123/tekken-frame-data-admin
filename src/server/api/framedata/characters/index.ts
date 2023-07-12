@@ -3,8 +3,10 @@ import axios from 'axios';
 import { backendApi } from '~/server/utils/backendApi';
 
 export default defineEventHandler(async (event) => {
+  console.log('--test: /api/framedata/characters/index.ts');
   try {
     const response = await backendApi('/api/v1/characters', 'GET');
+    console.log('--test: response.data: ', response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
