@@ -8,23 +8,14 @@ type ILogOutResponse = {
 };
 
 export default defineEventHandler(async (event) => {
-  try {
-    const response: ILogOutResponse = await $fetch('/api/v1/logout', {
-      method: 'GET',
-      baseURL: backendApiUrl
-    });
-    return {
-      ...response
-    };
-  } catch (error) {
-    // TODO: serverログ必須
-    console.log('catch error: ', error);
-  }
-  const errorResponse: IErrorResponse = {
-    errorInfo: {
-      message: 'ログアウトエラー',
-      code: 'ERR_logout'
-    }
+  const config = useRuntimeConfig();
+  deleteCookie(event, config.cookieName, {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  return {
+    userInfo: null
   };
-  return errorResponse;
 });

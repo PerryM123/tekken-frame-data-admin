@@ -37,6 +37,7 @@ const logInHandler = async () => {
 
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
     console.log('submit ok!!!');
+    // TODO: composibleに変更
     try {
       const { data, pending, error, refresh } = await useFetch('/api/login', {
         method: 'POST',
