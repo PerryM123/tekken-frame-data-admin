@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  modules: ['@nuxt/devtools', '@pinia/nuxt'],
   devServer: {
     port: 3001
   },

@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "local": "nuxt dev --dotenv .env.local",
-    "dev": "nuxt dev --dotenv .env.development",
+    "local": "nuxt prepare && nuxt dev --dotenv .env.local",
+    "dev": "nuxt prepare && nuxt dev --dotenv .env.development",
     "production": "nuxt dev --dotenv .env.production",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -22,14 +22,17 @@
     "*.**": "prettier --check --ignore-unknown"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.11",
     "axios": "^1.4.0",
     "cookie-signature": "^1.2.1",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
+    "pinia": "^2.1.4",
     "prettier": "^2.8.8"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^0.6.7",
     "@sidebase/nuxt-auth": "^0.6.0-beta.3",
     "@types/cookie-signature": "^1.1.0",
     "@types/node": "^18",

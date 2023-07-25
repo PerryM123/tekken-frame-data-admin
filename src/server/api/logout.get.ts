@@ -1,4 +1,4 @@
-import { IErrorResponse } from '@interface/IErrorResponse';
+// import { IErrorResponse } from '@interface/IErrorResponse';
 // TODO: なぜかエリアスでインポートするとエラーが発生
 // import { backendApiUrl } from '@utils/runtimeConfiguration';
 import { backendApiUrl } from '../../utils/runtimeConfig';
