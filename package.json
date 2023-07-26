@@ -34,6 +34,7 @@
   "devDependencies": {
     "@nuxt/devtools": "^0.6.7",
     "@sidebase/nuxt-auth": "^0.6.0-beta.3",
+    "@sidebase/nuxt-session": "^0.2.7",
     "@types/cookie-signature": "^1.1.0",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
