@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
+// TODO: serverのutilsを使ってしまってもいい？？？
+import { IUserInfo } from 'server/utils/session';
 
 interface Props {
   name?: string;
@@ -10,6 +13,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
+const { session } = await useSession();
+console.log('client side: session.value: ', session.value);
 const userName = ref('');
 const password = ref('');
 const errorMessage = ref('');
@@ -27,6 +32,7 @@ const resetErrorInfo = () => {
 };
 
 const logInHandler = async () => {
+  console.log('---test: logInHandler: CLICKED!!!');
   resetErrorInfo();
   if (userName.value.length === 0) {
     errorInfo.isUserNameEmpty.value = true;
@@ -43,6 +49,21 @@ const logInHandler = async () => {
         method: 'POST',
         body: { userName, password }
       });
+      console.log('the data is: ', data.value);
+      const userInfoResponse: IUserInfo = {
+        name: data.value?.name,
+        id: data.value?.id,
+        accountCreatedDate: data.value?.accountCreatedDate,
+        birthDay: data.value?.birthDay,
+        birthMonth: data.value?.birthMonth,
+        birthYear: data.value?.birthYear,
+        email: data.value?.email,
+        phoneNumber: data.value?.phoneNumber,
+        role: data.value?.role
+      };
+      const userMeStore = useUserMeStore();
+      const { setUserInfo } = userMeStore;
+      setUserInfo(userInfoResponse);
     } catch (e) {
       console.log('e: ', e);
     }
@@ -51,7 +72,7 @@ const logInHandler = async () => {
 };
 
 const updateHandler = async () => {
-  console.log('---test: updateHandler');
+  console.log('---test: updateHandler: CLICKED!!!');
   const { data, pending, error, refresh } = await useFetch(
     '/api/framedata/characters/newNameAGAIN',
     {
