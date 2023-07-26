@@ -1,9 +1,10 @@
 <script setup lang="ts">
-// TODO: storeができたら以下の１行を削除
-const isLoggedIn = true;
-
+const { remove } = await useSession();
+const { logout, isLoggedIn } = useUserInfo();
 const logOutClickHandler = () => {
   console.log('--test: logOutClickHandler clicked');
+  remove();
+  logout();
 };
 </script>
 <template>
