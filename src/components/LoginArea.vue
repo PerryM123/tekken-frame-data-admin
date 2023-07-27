@@ -2,7 +2,6 @@
 import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
 import { IUserInfo } from 'interface/IUserInfo';
-// TODO: serverのutilsを使ってしまってもいい？？？
 
 interface Props {
   name?: string;
