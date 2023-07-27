@@ -1,5 +1,5 @@
+import { IUserInfo } from '~/interface/IUserInfo';
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { IUserInfo } from 'server/utils/session';
 
 const defaultStore = {
   // TODO: 以下のstringに半角スペースを入れないと「Uncaught (in promise) TypeError: Cannot set properties of undefined (setting 'nodeValue')」のエラーが発生してしまう

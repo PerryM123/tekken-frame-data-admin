@@ -17,13 +17,15 @@ const logOutClickHandler = () => {
         <NuxtLink to="/user"> User </NuxtLink>
       </li>
       <li class="headerLink">
-        <NuxtLink to="/login"> Login </NuxtLink>
-      </li>
-      <li class="headerLink">
         <NuxtLink to="/character-info"> Character Info </NuxtLink>
       </li>
       <template v-if="isLoggedIn">
         <li @click="logOutClickHandler()" class="headerLink">✋Log Out</li>
+      </template>
+      <template v-else>
+        <li class="headerLink">
+          <NuxtLink to="/login">👍Login</NuxtLink>
+        </li>
       </template>
     </ul>
   </nav>
