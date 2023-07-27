@@ -4,9 +4,9 @@ definePageMeta({
 });
 </script>
 <template>
-  <h2>ユーザ情報</h2>
   <Head>
-    <Title>User</Title>
+    <Title>ビデオ通話</Title>
   </Head>
-  <User />
+  <h2>ビデオ通話</h2>
+  <VideoCall />
 </template>

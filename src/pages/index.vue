@@ -2,7 +2,8 @@
   <Head>
     <Title>Home</Title>
   </Head>
-  Home
+  <h2>Home</h2>
+  <p>Home</p>
 </template>
 
 <script lang="ts">

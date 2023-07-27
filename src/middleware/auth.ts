@@ -21,8 +21,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
   console.log('getUserInfo.value.phoneNumber: ', getUserInfo.value.phoneNumber);
   console.log('getUserInfo.value.role: ', getUserInfo.value.role);
 
-  const isLoggedIn = true;
-  if (!isLoggedIn) {
+  const { isLoggedIn } = useUserInfo();
+  console.log('client-side middleware: isLoggedIn: ', isLoggedIn);
+  if (!isLoggedIn.value) {
     return navigateTo('/login');
   }
 });
