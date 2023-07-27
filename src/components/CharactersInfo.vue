@@ -1,27 +1,28 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useCharacterInfoStore } from '~/store/characterInfo';
 import { Ref, ref } from 'vue';
-type ICharacterInfoApi = {
-  data: ICharacterInfoData[];
-};
-type ICharacterInfoData = {
-  name: string;
-  is_complete: boolean;
-};
+import { ICharacterInfoApi } from '~/interface/ICharacterInfo';
+
 const { $publicApi } = useNuxtApp();
-const pageDataRef: Ref = ref(null);
-// TODO: もしAPI通信エラーなどが発生する場合、どこでcatchされるか確認必須
-const { data }: ICharacterInfoApi = await $publicApi.get(
-  '/api/framedata/characters'
-);
-pageDataRef.value = data;
-console.log('pageDataRef: ', pageDataRef.value);
+const characterInfoStore = useCharacterInfoStore();
+const { setCharacterInfo, setIsLoaded } = characterInfoStore;
+const { characterInfo, isLoaded } = storeToRefs(characterInfoStore);
+if (!isLoaded.value) {
+  // TODO: もしAPI通信エラーなどが発生する場合、どこでcatchされるか確認必須
+  const { data }: ICharacterInfoApi = await $publicApi.get(
+    '/api/framedata/characters'
+  );
+  setCharacterInfo(data);
+  setIsLoaded(true);
+}
 </script>
 <template>
-  <div v-for="(item, key) in pageDataRef" :key="key" class="characterItem">
+  <div v-for="(item, key) in characterInfo" :key="key" class="characterItem">
     <p><span class="characterName">Name:</span> {{ item.name }}</p>
     <p>
       <span class="characterName">Is Complete:</span>
-      {{ Boolean(item.is_complete) }}
+      {{ Boolean(item.isComplete) }}
     </p>
   </div>
 </template>
