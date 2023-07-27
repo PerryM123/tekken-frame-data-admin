@@ -73,7 +73,7 @@ const logInHandler = async () => {
         const userMeStore = useUserMeStore();
         const { setUserInfo } = userMeStore;
         setUserInfo(userInfoResponse);
-        const redirectTo = useRoute().redirectedFrom?.path || '/';
+        const redirectTo = useRoute().redirectedFrom?.path || PAGE_URL.USER;
         useRouter().push(redirectTo);
       } else {
         errorMessage.value = '認証できませんでした';
