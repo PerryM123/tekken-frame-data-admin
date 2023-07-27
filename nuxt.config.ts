@@ -17,7 +17,9 @@ export default defineNuxtConfig({
     cookieName: 'nuxt-perry-session',
     // SSR＆CSR側
     public: {
-      publicApiUrl: process.env.PUBLIC_API_URL || ''
+      publicApiUrl: process.env.PUBLIC_API_URL || '',
+      // TODO: 勝手に見れる可能性があるか確認必須
+      skywayApiKey: process.env.SKY_WAY_API_KEY || ''
     }
   },
 

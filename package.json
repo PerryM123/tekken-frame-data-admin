@@ -29,7 +29,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "pinia": "^2.1.4",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "skyway-js": "^4.4.5"
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.6.7",
