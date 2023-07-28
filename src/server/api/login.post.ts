@@ -1,11 +1,56 @@
 // TODO: なぜかエリアスでインポートするとエラーが発生
 // import { backendApiUrl } from '@utils/runtimeConfiguration';
+import { sign } from 'cookie-signature';
 import { backendApiUrl, sercetApiKey } from '../../utils/runtimeConfig';
 import type { H3Event } from 'h3';
+import Redis from 'ioredis';
+import { uuid } from 'uuidv4';
+
+// uuidv4();
+// const uuidv4 = require('uuid').v4;
 
 export default defineEventHandler(async (event: H3Event) => {
   console.log('========================================');
   const config = useRuntimeConfig();
+  const app = useNitroApp();
+  const sessionId = uuid();
+  console.log('--app: ', app);
+  console.log('--app.session: ', app.session);
+  console.log('--config.cookieSecret: ', config.cookieSecret);
+
+  const signedSessionId = sign(sessionId, config.cookieSecret);
+
+  // クッキー作成
+  setCookie(event, 'perry-session', signedSessionId, {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    expires: new Date(Date.now() + config.sessionExpires * 1000)
+  });
+
+  // セッション作成
+  await app.session.set(config.sessionIdPrefix + sessionId, {
+    id: 'userWithPassword.id',
+    email: 'userWithPassword.email',
+    name: 'userWithPassword.name',
+    role: 'userWithPassword.role'
+  });
+  // console.log('--config.redisUrl: ', config.redisUrl);
+  // const redis = new Redis(config.redisUrl);
+  // const count = await redis.incr('counter');
+  // const stern = await redis.incr('stern');
+  // const stern2 = await redis.get('stern');
+  // const result = await redis.hget('hash-key', 'key').then(function (value) {
+  //   console.log('value', value);
+  // });
+  // console.log('--count: ', count);
+  // console.log('--stern: ', stern);
+  // console.log('--stern2: ', stern2);
+  // console.log('--result: ', result);
+  // console.log('--sessionId is: ', sessionId);
+  // redis.quit();
+
   const body = await readBody<{
     userName: string;
     password: string;

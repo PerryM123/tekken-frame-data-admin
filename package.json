@@ -27,10 +27,13 @@
     "cookie-signature": "^1.2.1",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
+    "ioredis": "^5.3.2",
     "lint-staged": "^13.2.2",
     "pinia": "^2.1.4",
     "prettier": "^2.8.8",
-    "skyway-js": "^4.4.5"
+    "skyway-js": "^4.4.5",
+    "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@nuxt/devtools": "^0.6.7",
