@@ -12,8 +12,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-const { session } = await useSession();
-console.log('client side: session.value: ', session.value);
 // TODO: 以下のaaを削除
 // const userName = ref<string>('aa');
 // const password = ref<string>('aa');
