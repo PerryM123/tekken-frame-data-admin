@@ -3,26 +3,15 @@
 import { sign, unsign } from 'cookie-signature';
 import { backendApiUrl, sercetApiKey } from '../../utils/runtimeConfig';
 import type { H3Event } from 'h3';
-import Redis from 'ioredis';
 import { uuid } from 'uuidv4';
-
-// uuidv4();
-// const uuidv4 = require('uuid').v4;
+import { IUserInfo } from 'interface/IUserInfo';
 
 export default defineEventHandler(async (event: H3Event) => {
   console.log('========================================');
   const config = useRuntimeConfig();
   const app = useNitroApp();
   const sessionId = uuid();
-  console.log('--app: ', app);
-  console.log('--app.session: ', app.session);
-  console.log('--config.cookieSecret: ', config.cookieSecret);
-
   const signedSessionId = sign(sessionId, config.cookieSecret);
-  const unsignedSessionId = unsign(signedSessionId, config.cookieSecret);
-  console.log('--sessionId: ', sessionId);
-  console.log('--signedSessionId: ', signedSessionId);
-  console.log('--unsignedSessionId: ', unsignedSessionId);
   // クッキー作成
   setCookie(event, config.public.cookieName, signedSessionId, {
     httpOnly: true,
@@ -32,28 +21,6 @@ export default defineEventHandler(async (event: H3Event) => {
     secure: true,
     expires: new Date(Date.now() + config.sessionExpires * 1000)
   });
-
-  // セッション作成
-  await app.session.set(config.sessionIdPrefix + sessionId, {
-    id: 'userWithPassword.id',
-    email: 'userWithPassword.email',
-    name: 'userWithPassword.name',
-    role: 'userWithPassword.role'
-  });
-  // console.log('--config.redisUrl: ', config.redisUrl);
-  // const redis = new Redis(config.redisUrl);
-  // const count = await redis.incr('counter');
-  // const stern = await redis.incr('stern');
-  // const stern2 = await redis.get('stern');
-  // const result = await redis.hget('hash-key', 'key').then(function (value) {
-  //   console.log('value', value);
-  // });
-  // console.log('--count: ', count);
-  // console.log('--stern: ', stern);
-  // console.log('--stern2: ', stern2);
-  // console.log('--result: ', result);
-  // console.log('--sessionId is: ', sessionId);
-  // redis.quit();
 
   const body = await readBody<{
     userName: string;
@@ -89,21 +56,35 @@ export default defineEventHandler(async (event: H3Event) => {
       });
     }
 
-    // TODO: 以下の１行目は仮です。loginInfo APIができたら差し替えが必要
-    let testUserIdFromResponse = 111;
-    event.context.session = {
-      ...event.context.session,
-      ...getUserInfoById(testUserIdFromResponse),
-      isLoggedIn: true
+    const userMeData: any = await $fetch(
+      `${backendApiUrl}/api/v1/me/${data.userId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': sercetApiKey || ''
+        }
+      }
+    );
+    console.log('userMeData: ', userMeData);
+
+    // セッション作成
+    await app.session.set(config.sessionIdPrefix + sessionId, {
+      id: userMeData.id,
+      email: userMeData.email,
+      name: userMeData.name,
+      role: userMeData.roleId
+    });
+
+    let userInfo: IUserInfo = {
+      id: userMeData.id,
+      email: userMeData.email,
+      name: userMeData.name,
+      role: userMeData.roleId
     };
 
-    console.log(
-      'login222: event.context.session before return: ',
-      event.context.session
-    );
     return {
-      ...getUserInfoById(testUserIdFromResponse),
-      isLoggedIn: true
+      ...userInfo
     };
   } catch (error) {
     console.error('--test: error: ', error);

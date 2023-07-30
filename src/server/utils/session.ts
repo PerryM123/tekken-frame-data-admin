@@ -1,5 +1,4 @@
 import type { H3Event } from 'h3';
-import { IUserInfo } from 'interface/IUserInfo';
 
 export const getUserInfoById = (userId: number): IUserInfo => {
   // TODO: ログイン情報APIを呼び出し、情報を取得
