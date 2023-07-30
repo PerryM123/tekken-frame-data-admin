@@ -2,16 +2,9 @@ const MINUTES = 5;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/devtools',
-    '@pinia/nuxt',
-    '@sidebase/nuxt-session'
-    // '@sidebase/nuxt-auth'
+    // '@nuxt/devtools',
+    '@pinia/nuxt'
   ],
-  // auth: {
-  //   provider: {
-  //     type: 'authjs'
-  //   }
-  // },
 
   devServer: {
     port: 3001
