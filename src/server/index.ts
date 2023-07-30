@@ -18,19 +18,4 @@ export default async (_nitroApp: Nitro) => {
     ttl: config.sessionExpires
   });
   _nitroApp.session = redisSession;
-  console.log('--server/index.ts: _nitroApp.session: ', _nitroApp.session);
-  console.log(
-    '--server/index.ts: config.sessionExpires: ',
-    config.sessionExpires
-  );
-
-  // MongoDB初期接続
-  // try {
-  //   mongoose.set('strictQuery', false);
-  //   await mongoose.connect(config.mongoUrl);
-
-  //   console.log('MongoDB connection established.');
-  // } catch (err) {
-  //   console.error('MongoDB connection failed.', err);
-  // }
 };

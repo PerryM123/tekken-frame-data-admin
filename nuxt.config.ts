@@ -1,4 +1,4 @@
-const MINUTES = 0.5;
+const MINUTES = 5;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -26,15 +26,15 @@ export default defineNuxtConfig({
     backendApiUrl: process.env.BACKEND_API_URL || '',
     sercetApiKey: process.env.SECRET_API_KEY || '',
     cookieSecret: process.env.COOKIE_SECRET || '',
-    cookieName: 'nuxt-perry-session',
     redisUrl: process.env.SESSION_REDIS_URL || '',
     sessionExpires: 60 * MINUTES,
-    sessionIdPrefix: 'SESSION_ID_PREFIX' || 'redisPrefix',
+    sessionIdPrefix: process.env.SESSION_ID_PREFIX || 'redisPrefix_',
     // SSR＆CSR側
     public: {
       publicApiUrl: process.env.PUBLIC_API_URL || '',
       // TODO: 勝手に見れる可能性があるか確認必須
-      skywayApiKey: process.env.SKY_WAY_API_KEY || ''
+      skywayApiKey: process.env.SKY_WAY_API_KEY || '',
+      cookieName: 'perry-session'
     }
   },
 
