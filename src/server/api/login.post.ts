@@ -1,6 +1,6 @@
 // TODO: なぜかエリアスでインポートするとエラーが発生
 // import { backendApiUrl } from '@utils/runtimeConfiguration';
-import { sign } from 'cookie-signature';
+import { sign, unsign } from 'cookie-signature';
 import { backendApiUrl, sercetApiKey } from '../../utils/runtimeConfig';
 import type { H3Event } from 'h3';
 import Redis from 'ioredis';
@@ -19,13 +19,17 @@ export default defineEventHandler(async (event: H3Event) => {
   console.log('--config.cookieSecret: ', config.cookieSecret);
 
   const signedSessionId = sign(sessionId, config.cookieSecret);
-
+  const unsignedSessionId = unsign(signedSessionId, config.cookieSecret);
+  console.log('--sessionId: ', sessionId);
+  console.log('--signedSessionId: ', signedSessionId);
+  console.log('--unsignedSessionId: ', unsignedSessionId);
   // クッキー作成
-  setCookie(event, 'perry-session', signedSessionId, {
+  setCookie(event, config.public.cookieName, signedSessionId, {
     httpOnly: true,
     path: '/',
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
+    // sameSite: 'strict',
+    // secure: process.env.NODE_ENV === 'production',
+    secure: true,
     expires: new Date(Date.now() + config.sessionExpires * 1000)
   });
 

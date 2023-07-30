@@ -1,9 +1,12 @@
 <script setup lang="ts">
-const { remove } = await useSession();
 const { logout, isLoggedIn } = useUserInfo();
-const logOutClickHandler = () => {
-  remove();
-  logout();
+const config = useRuntimeConfig();
+
+const logOutClickHandler = async () => {
+  const { $publicApi } = useNuxtApp();
+  const { data } = await $publicApi.post('/api/logout');
+  // client側のクッキーを削除
+  useCookie(config.public.cookieName).value = null;
 };
 </script>
 <template>

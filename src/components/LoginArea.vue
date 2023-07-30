@@ -14,8 +14,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const { session } = await useSession();
 console.log('client side: session.value: ', session.value);
-const userName = ref<string>('');
-const password = ref<string>('');
+// TODO: 以下のaaを削除
+// const userName = ref<string>('aa');
+// const password = ref<string>('aa');
+const userName = ref<string>('perry');
+const password = ref<string>('123');
 const errorMessage = ref<string>('');
 const errorInfo = {
   isUserNameEmpty: ref<boolean>(false),
