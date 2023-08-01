@@ -1,3 +1,4 @@
+const ONE_MINUTE = 60;
 const MINUTES = 5;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -32,7 +33,15 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    plugins: ['~/server/index.ts']
+    // plugins: ['~/server/index.ts']
+    storage: {
+      redis: {
+        driver: 'redis',
+        port: process.env.SESSION_REDIS_PORT,
+        host: process.env.SESSION_REDIS_HOST,
+        ttl: ONE_MINUTE * 5 // 5分
+      }
+    }
   },
   devtools: {
     enabled: true
