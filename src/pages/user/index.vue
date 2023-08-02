@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth-perry']
+  // TODO: 以下のコメントアウトを外すとhydrateの問題が発生
+  // middleware: ['auth-perry']
 });
 </script>
 <template>

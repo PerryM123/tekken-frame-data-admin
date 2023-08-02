@@ -2,10 +2,15 @@ import { useUserMeStore } from '~/store/userMe';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   console.log('============================================');
-  console.log(`client-side middleware: auth-perry`);
+  console.log(
+    `[${
+      process.server ? 'server' : 'client'
+    }]client-side middleware: auth-perry`
+  );
   const { $publicApi } = useNuxtApp();
-  const { data } = await $publicApi.get('/api/session-perry');
-  if (data.redirect) {
+  const { data } = await $publicApi.get<ISessionApi>('/api/test');
+
+  if (data.isRedirect) {
     return navigateTo('/login');
   }
   const userMeStore = useUserMeStore();

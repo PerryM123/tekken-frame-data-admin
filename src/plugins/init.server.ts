@@ -14,23 +14,29 @@ function cookieFromRequestHeaders(key: string) {
   return '';
 }
 
+const getRoleType = (role?: number) => {
+  if (role === ROLE_TYPE.ADMIN) return ROLE_TYPE.ADMIN;
+  if (role === ROLE_TYPE.USER) return ROLE_TYPE.USER;
+  return ROLE_TYPE.GUEST;
+};
+
 export default defineNuxtPlugin(async (nuxtApp) => {
-  console.log('-----------------------init server');
+  console.log(`[${process.server ? 'server' : 'client'}] init.server`);
   const config = useRuntimeConfig();
-  console.log('config.public.cookieName: ', config.public.cookieName);
   const token = cookieFromRequestHeaders(config.public.cookieName);
-  console.log('token: ', token);
-
-  if (token) {
-    const unsignedSessionId = unsign(token, config.cookieSecret);
-    console.log('unsignedSessionId: ', unsignedSessionId);
-    // const app = useNitroApp();
-    // const returnValue = await app.session.get(
-    //   config.sessionIdPrefix + unsignedSessionId
-    // );
-    // console.log('returnValue: ', returnValue);
-
-    // const userMeStore = useUserMeStore();
-    // const { setUserInfo } = userMeStore;
+  if (token.length) {
+    const { data: userMeData } = await useFetch<ISessionApi>('/api/test', {
+      method: 'get'
+    });
+    // TODO: piniaエラー対応必須
+    const userMe = useUserMeStore(nuxtApp.$pinia);
+    const { setUserInfo } = userMe;
+    let role = getRoleType(userMeData.value?.role);
+    setUserInfo({
+      name: userMeData.value?.name,
+      id: userMeData.value?.id,
+      email: userMeData.value?.email,
+      role
+    });
   }
 });

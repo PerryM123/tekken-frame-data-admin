@@ -8,5 +8,5 @@ export interface IUserInfo {
   birthYear?: number;
   email?: string;
   phoneNumber?: string;
-  role?: 'user' | 'admin' | 'guest';
+  role?: number;
 }

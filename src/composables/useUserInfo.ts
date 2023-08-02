@@ -7,7 +7,7 @@ export default function useUserInfo() {
   const { setDefaultState } = userMeStore;
   const { role } = storeToRefs(userMeStore);
 
-  const isLoggedIn = computed(() => role?.value !== 'guest');
+  const isLoggedIn = computed(() => role?.value !== ROLE_TYPE.GUEST);
   const logout = () => {
     setDefaultState();
     navigateTo(PAGE_URL.HOME);
