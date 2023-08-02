@@ -7,6 +7,7 @@ const logOutClickHandler = async () => {
   const { data } = await $publicApi.post('/api/logout');
   // client側のクッキーを削除
   useCookie(config.public.cookieName).value = null;
+  logout();
 };
 </script>
 <template>
