@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }]client-side middleware: auth-perry`
   );
   const { $publicApi } = useNuxtApp();
-  const { data } = await $publicApi.get<ISessionApi>('/api/test');
+  const { data } = await $publicApi.get<ISessionGetApi>('/api/session');
 
   if (data.isRedirect) {
     return navigateTo('/login');

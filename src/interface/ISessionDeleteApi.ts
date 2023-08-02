@@ -1,0 +1,3 @@
+interface ISessionDeleteApi {
+  isSuccess: boolean;
+}

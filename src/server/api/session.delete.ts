@@ -3,6 +3,10 @@ export default defineEventHandler(async (event) => {
     token: string;
   }>(event);
 
+  // TODO: エアーハンドリング
   await useStorage().removeItem(`redis:${body.token}`, {});
-  return 'Data is set man111';
+  const returnObj: ISessionDeleteApi = {
+    isSuccess: true
+  };
+  return returnObj;
 });

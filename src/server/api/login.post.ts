@@ -6,19 +6,33 @@ import type { H3Event } from 'h3';
 import { uuid } from 'uuidv4';
 import { IUserInfo } from 'interface/IUserInfo';
 
+interface ILoginApi {
+  // TODO: オプショナルでいいのかな
+  isSuccess?: boolean;
+  userId?: number;
+  statusCode?: number;
+  message?: string;
+}
+
+interface IUserMeApi {
+  userId: number;
+  name: string;
+  email: string;
+  roleId: number;
+}
+
 export default defineEventHandler(async (event: H3Event) => {
-  console.log('========================================');
+  console.log('login.post');
   const config = useRuntimeConfig();
-  const app = useNitroApp();
   const sessionId = uuid();
   const signedSessionId = sign(sessionId, config.cookieSecret);
-  // クッキー作成
+
+  // clientクッキー作成
   setCookie(event, config.public.cookieName, signedSessionId, {
     httpOnly: true,
     path: '/',
-    // sameSite: 'strict',
-    // secure: process.env.NODE_ENV === 'production',
-    secure: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
     expires: new Date(Date.now() + config.sessionExpires * 1000)
   });
 
@@ -33,12 +47,10 @@ export default defineEventHandler(async (event: H3Event) => {
       message: 'パラメータが足りない'
     });
   }
-  // TODO: fetchの代わりに$fetchも同じことできないか確認必須
-  // TODO: any変数型を削除
+
   try {
-    const data: any = await $fetch(`${backendApiUrl}/api/v1/login`, {
+    const loginData = await $fetch<ILoginApi>(`${backendApiUrl}/api/v1/login`, {
       method: 'POST',
-      // TODO: rememberMeを追加
       body: {
         userName,
         password
@@ -49,15 +61,15 @@ export default defineEventHandler(async (event: H3Event) => {
       }
     });
 
-    if (data.code) {
+    if (loginData.statusCode) {
       throw createError({
-        statusCode: data.status,
-        message: data.message
+        statusCode: loginData.statusCode,
+        message: loginData.message
       });
     }
 
-    const userMeData: any = await $fetch(
-      `${backendApiUrl}/api/v1/me/${data.userId}`,
+    const userMeData = await $fetch<IUserMeApi>(
+      `${backendApiUrl}/api/v1/me/${loginData.userId}`,
       {
         method: 'GET',
         headers: {
@@ -68,20 +80,27 @@ export default defineEventHandler(async (event: H3Event) => {
     );
     console.log('userMeData: ', userMeData);
 
-    // セッション作成
-    await app.session.set(config.sessionIdPrefix + sessionId, {
-      id: userMeData.id,
-      email: userMeData.email,
-      name: userMeData.name,
-      role: userMeData.roleId
+    // redisセッション作成
+    // TODO: Nitroにて他のNitro APIを叩くのは大丈夫かな、、、
+    const data = await $fetch<ISessionPostApi>('/api/session', {
+      method: 'POST',
+      body: {
+        id: userMeData.userId,
+        email: userMeData.email,
+        name: userMeData.name,
+        role: userMeData.roleId,
+        token: sessionId
+      }
     });
+    console.log('api/session post data: ', data);
 
     let userInfo: IUserInfo = {
-      id: userMeData.id,
+      id: userMeData.userId,
       email: userMeData.email,
       name: userMeData.name,
       role: userMeData.roleId
     };
+    console.log('before login.post return: ', userInfo);
 
     return {
       ...userInfo

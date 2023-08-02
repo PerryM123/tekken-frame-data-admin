@@ -25,9 +25,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   const token = cookieFromRequestHeaders(config.public.cookieName);
   if (token.length) {
-    const { data: userMeData } = await useFetch<ISessionApi>('/api/test', {
-      method: 'get'
-    });
+    const { data: userMeData } = await useFetch<ISessionGetApi>(
+      '/api/session',
+      {
+        method: 'get'
+      }
+    );
     // TODO: piniaエラー対応必須
     const userMe = useUserMeStore(nuxtApp.$pinia);
     const { setUserInfo } = userMe;

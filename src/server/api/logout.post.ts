@@ -23,7 +23,9 @@ export default defineEventHandler(async (event) => {
     console.log('unsignedSession: ', unsignedSession);
     if (unsignedSession) {
       // セッション破棄
-      await app.session.destroy(config.sessionIdPrefix + unsignedSession);
+      const data = await useStorage<ISessionGetApi>().removeItem(
+        `redis:${unsignedSession}`
+      );
     }
   }
 
