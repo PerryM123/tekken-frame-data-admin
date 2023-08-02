@@ -10,7 +10,7 @@ export default function useUserInfo() {
   const isLoggedIn = computed(() => role?.value !== 'guest');
   const logout = () => {
     setDefaultState();
-    useRouter().push(PAGE_URL.HOME);
+    navigateTo(PAGE_URL.HOME);
   };
   return { isLoggedIn, logout };
 }
