@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
+import { IUserInfo } from 'interface/IUserInfo';
 
 interface Props {
   name?: string;
@@ -10,14 +12,15 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-const userName = ref('');
-const password = ref('');
-const errorMessage = ref('');
+const userName = ref<string>('');
+const password = ref<string>('');
+const errorMessage = ref<string>('');
 const errorInfo = {
-  isUserNameEmpty: ref(false),
-  isPasswordEmpty: ref(false),
-  isIncorrectPassword: ref(false)
+  isUserNameEmpty: ref<boolean>(false),
+  isPasswordEmpty: ref<boolean>(false),
+  isIncorrectPassword: ref<boolean>(false)
 };
+const isLoading = ref<boolean>(false);
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
@@ -36,29 +39,46 @@ const logInHandler = async () => {
   }
 
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
-    console.log('submit ok!!!');
     try {
-      const { data, pending, error, refresh } = await useFetch('/api/login', {
+      isLoading.value = true;
+      // TODO: 仮のコードです。動作確認が終わり次第、以下のsleep関数を削除
+      const sleep = (ms: number) => {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      };
+      await sleep(1000);
+
+      const { data } = await useFetch('/api/login', {
         method: 'POST',
         body: { userName, password }
       });
+      if (data.value) {
+        const userInfoResponse: IUserInfo = {
+          name: data.value?.name,
+          id: data.value?.id,
+          accountCreatedDate: data.value?.accountCreatedDate,
+          birthDay: data.value?.birthDay,
+          birthMonth: data.value?.birthMonth,
+          birthYear: data.value?.birthYear,
+          email: data.value?.email,
+          phoneNumber: data.value?.phoneNumber,
+          role: data.value?.role
+        };
+        const userMeStore = useUserMeStore();
+        const { setUserInfo } = userMeStore;
+        setUserInfo(userInfoResponse);
+        const redirectTo = useRoute().redirectedFrom?.path || PAGE_URL.USER;
+        useRouter().push(redirectTo);
+      } else {
+        errorMessage.value = '認証できませんでした';
+      }
     } catch (e) {
       console.log('e: ', e);
     }
+    isLoading.value = false;
   }
   setErrorText();
-};
-
-const updateHandler = async () => {
-  console.log('---test: updateHandler');
-  const { data, pending, error, refresh } = await useFetch(
-    '/api/framedata/characters/newNameAGAIN',
-    {
-      method: 'PUT',
-      body: { name: 'destiny2' },
-      credentials: 'include'
-    }
-  );
 };
 
 const setErrorText = () => {
@@ -72,31 +92,41 @@ const setErrorText = () => {
     errorMessage.value = 'パスワードは一致していません！';
   }
 };
+
+const onTextChange = () => {
+  resetErrorInfo();
+};
 </script>
 <template>
   <div class="loginArea">
-    <div class="loginInfo">
-      <h1>Admin Login</h1>
-      <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
-      <p class="inputTitle">User Name</p>
-      <input
-        v-model="userName"
-        :class="{ errorState: errorInfo.isUserNameEmpty.value }"
-        type="text"
-      />
-      <p class="inputTitle">Password</p>
-      <input
-        v-model="password"
-        :class="{ errorState: errorInfo.isPasswordEmpty.value }"
-        type="password"
-      />
-      <div>
-        <button class="loginButton" @click="logInHandler()">Login</button>
+    <template v-if="!isLoading">
+      <div class="loginInfo">
+        <h1>Admin Login</h1>
+        <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
+        <p class="inputTitle">User Name</p>
+        <form @submit="logInHandler">
+          <input
+            v-model="userName"
+            @input="onTextChange"
+            :class="{ errorState: errorInfo.isUserNameEmpty.value }"
+            type="text"
+          />
+          <p class="inputTitle">Password</p>
+          <input
+            v-model="password"
+            @input="onTextChange"
+            :class="{ errorState: errorInfo.isPasswordEmpty.value }"
+            type="password"
+          />
+          <div>
+            <button class="loginButton" type="submit">Login</button>
+          </div>
+        </form>
       </div>
-      <div class="putTest">
-        <button class="loginButton" @click="updateHandler()">Put</button>
-      </div>
-    </div>
+    </template>
+    <template v-else>
+      <img src="/loading.gif" />
+    </template>
   </div>
 </template>
 <style scoped lang="scss">
