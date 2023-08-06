@@ -1,5 +1,4 @@
 export interface IUserInfo {
-  // TODO: オプショナル変数型で大丈夫かな
   name?: string;
   id?: number;
   accountCreatedDate?: string;

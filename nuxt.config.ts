@@ -2,10 +2,7 @@ const ONE_MINUTE = 60;
 const MINUTES = 5;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    // '@nuxt/devtools',
-    '@pinia/nuxt'
-  ],
+  modules: ['@nuxt/devtools', '@pinia/nuxt'],
 
   devServer: {
     port: 3001
@@ -26,14 +23,12 @@ export default defineNuxtConfig({
     // SSR＆CSR側
     public: {
       publicApiUrl: process.env.PUBLIC_API_URL || '',
-      // TODO: 勝手に見れる可能性があるか確認必須
       skywayApiKey: process.env.SKY_WAY_API_KEY || '',
       cookieName: 'perry-session'
     }
   },
 
   nitro: {
-    // plugins: ['~/server/index.ts']
     storage: {
       redis: {
         driver: 'redis',
@@ -44,6 +39,6 @@ export default defineNuxtConfig({
     }
   },
   devtools: {
-    enabled: true
+    enabled: false
   }
 });

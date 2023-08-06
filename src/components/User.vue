@@ -33,7 +33,6 @@ const getRoleName = (role?: number) => {
     <li><b>birthYear:</b> {{ birthYear || '-' }}</li>
     <li><b>email:</b> {{ email || '-' }}</li>
     <li><b>phoneNumber:</b> {{ phoneNumber || '-' }}</li>
-    <!-- TODO: ROLE_TYPEの代わりにROLE名に変更 -->
     <li><b>role:</b> {{ getRoleName(role) }}</li>
   </ul>
 </template>

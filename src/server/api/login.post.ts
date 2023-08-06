@@ -7,7 +7,6 @@ import { uuid } from 'uuidv4';
 import { IUserInfo } from 'interface/IUserInfo';
 
 interface ILoginApi {
-  // TODO: オプショナルでいいのかな
   isSuccess?: boolean;
   userId?: number;
   statusCode?: number;
@@ -22,7 +21,6 @@ interface IUserMeApi {
 }
 
 export default defineEventHandler(async (event: H3Event) => {
-  console.log('login.post');
   const config = useRuntimeConfig();
   const sessionId = uuid();
   const signedSessionId = sign(sessionId, config.cookieSecret);
@@ -92,7 +90,6 @@ export default defineEventHandler(async (event: H3Event) => {
         token: sessionId
       }
     });
-    console.log('api/session post data: ', data);
 
     let userInfo: IUserInfo = {
       id: userMeData.userId,
@@ -100,19 +97,12 @@ export default defineEventHandler(async (event: H3Event) => {
       name: userMeData.name,
       role: userMeData.roleId
     };
-    console.log('before login.post return: ', userInfo);
 
     return {
       ...userInfo
     };
   } catch (error) {
-    console.error('--test: error: ', error);
-    // return {
-    //   isSuccess: false,
-    //   statusCode: 'data.status',
-    //   message: 'data.message'
-    // };
-
+    console.error(error);
     event.context.session = {
       ...event.context.session,
       isLoggedIn: false

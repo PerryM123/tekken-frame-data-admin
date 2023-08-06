@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
   );
   const config = useRuntimeConfig();
   const cookies = parseCookies(event);
-  console.log('cookies: ', cookies);
 
   // セッションID取得
   const cookie = cookies[config.public.cookieName];

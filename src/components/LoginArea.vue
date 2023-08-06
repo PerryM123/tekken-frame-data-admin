@@ -12,11 +12,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-// TODO: 以下のaaを削除
-// const userName = ref<string>('aa');
-// const password = ref<string>('aa');
-const userName = ref<string>('perry');
-const password = ref<string>('123');
+const userName = ref<string>('');
+const password = ref<string>('');
 const errorMessage = ref<string>('');
 const errorInfo = {
   isUserNameEmpty: ref<boolean>(false),
@@ -33,7 +30,6 @@ const resetErrorInfo = () => {
 };
 
 const logInHandler = async () => {
-  console.log('---test: logInHandler: CLICKED!!!');
   resetErrorInfo();
   if (userName.value.length === 0) {
     errorInfo.isUserNameEmpty.value = true;
@@ -57,7 +53,6 @@ const logInHandler = async () => {
         method: 'POST',
         body: { userName, password }
       });
-      console.log('the data is: ', data.value);
       if (data.value) {
         const userInfoResponse: IUserInfo = {
           name: data.value?.name,
