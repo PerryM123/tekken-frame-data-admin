@@ -12,6 +12,13 @@ export default defineNuxtConfig({
     public: {
       publicApiUrl: process.env.PUBLIC_API_URL || ''
     }
+  },
+  css: ['~/assets/css/main.css'],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {}
+    }
   }
   // TODO: alias: https://nuxt.com/docs/api/configuration/nuxt-config#alias
   // TODO: faviconを設定
