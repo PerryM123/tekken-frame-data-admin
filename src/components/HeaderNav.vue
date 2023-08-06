@@ -11,7 +11,9 @@ const logOutClickHandler = async () => {
 };
 </script>
 <template>
-  <nav class="flex items-center justify-between p-3 shadow-xl">
+  <nav
+    class="fixed top-0 z-20 flex w-full items-center justify-between bg-white p-3 shadow-xl md:fixed"
+  >
     <img src="/logo.png" width="60" class="hover:opacity-80" />
     <ul class="flex justify-between">
       <li>
