@@ -2,7 +2,6 @@
   <Head>
     <Title>Characters Info</Title>
   </Head>
-
   <div>
     <h2>Character Info</h2>
     <ClientOnly>

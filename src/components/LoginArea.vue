@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
+import { IUserInfo } from 'interface/IUserInfo';
 
 interface Props {
   name?: string;
@@ -10,14 +12,15 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-const userName = ref('perry');
-const password = ref('123');
-const errorMessage = ref('');
+const userName = ref<string>('');
+const password = ref<string>('');
+const errorMessage = ref<string>('');
 const errorInfo = {
-  isUserNameEmpty: ref(false),
-  isPasswordEmpty: ref(false),
-  isIncorrectPassword: ref(false)
+  isUserNameEmpty: ref<boolean>(false),
+  isPasswordEmpty: ref<boolean>(false),
+  isIncorrectPassword: ref<boolean>(false)
 };
+const isLoading = ref<boolean>(false);
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
@@ -36,15 +39,44 @@ const logInHandler = async () => {
   }
 
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
-    console.log('submit ok!!!');
     try {
-      const { data, pending, error, refresh } = await useFetch('/api/login', {
+      isLoading.value = true;
+      // TODO: 仮のコードです。動作確認が終わり次第、以下のsleep関数を削除
+      const sleep = (ms: number) => {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      };
+      await sleep(1000);
+
+      const { data } = await useFetch('/api/login', {
         method: 'POST',
         body: { userName, password }
       });
+      if (data.value) {
+        const userInfoResponse: IUserInfo = {
+          name: data.value?.name,
+          id: data.value?.id,
+          accountCreatedDate: data.value?.accountCreatedDate,
+          birthDay: data.value?.birthDay,
+          birthMonth: data.value?.birthMonth,
+          birthYear: data.value?.birthYear,
+          email: data.value?.email,
+          phoneNumber: data.value?.phoneNumber,
+          role: data.value?.role
+        };
+        const userMeStore = useUserMeStore();
+        const { setUserInfo } = userMeStore;
+        setUserInfo(userInfoResponse);
+        const redirectTo = useRoute().redirectedFrom?.path || PAGE_URL.USER;
+        useRouter().push(redirectTo);
+      } else {
+        errorMessage.value = '認証できませんでした';
+      }
     } catch (e) {
       console.log('e: ', e);
     }
+    isLoading.value = false;
   }
   setErrorText();
 };
@@ -59,6 +91,10 @@ const setErrorText = () => {
   } else if (errorInfo.isIncorrectPassword.value) {
     errorMessage.value = 'パスワードは一致していません！';
   }
+};
+
+const onTextChange = () => {
+  resetErrorInfo();
 };
 </script>
 <template>
