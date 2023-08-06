@@ -10,8 +10,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-const userName = ref('');
-const password = ref('');
+const userName = ref('perry');
+const password = ref('123');
 const errorMessage = ref('');
 const errorInfo = {
   isUserNameEmpty: ref(false),
@@ -49,18 +49,6 @@ const logInHandler = async () => {
   setErrorText();
 };
 
-const updateHandler = async () => {
-  console.log('---test: updateHandler');
-  const { data, pending, error, refresh } = await useFetch(
-    '/api/framedata/characters/newNameAGAIN',
-    {
-      method: 'PUT',
-      body: { name: 'destiny2' },
-      credentials: 'include'
-    }
-  );
-};
-
 const setErrorText = () => {
   if (errorInfo.isUserNameEmpty.value && errorInfo.isPasswordEmpty.value) {
     errorMessage.value = 'Usernameとpasswordは入力必須';
@@ -74,58 +62,41 @@ const setErrorText = () => {
 };
 </script>
 <template>
-  <div class="loginArea">
-    <div class="loginInfo">
-      <h1>Admin Login</h1>
+  <div class="flex justify-center">
+    <div
+      class="mt-10 w-[400px] rounded-lg border-2 border-solid border-[#dddddd] px-4 py-9"
+    >
+      <h1
+        class="mb-4 text-center text-3xl leading-none tracking-tight text-gray-900"
+      >
+        ログイン画面
+      </h1>
       <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
-      <p class="inputTitle">User Name</p>
-      <input
-        v-model="userName"
-        :class="{ errorState: errorInfo.isUserNameEmpty.value }"
-        type="text"
-      />
-      <p class="inputTitle">Password</p>
-      <input
-        v-model="password"
-        :class="{ errorState: errorInfo.isPasswordEmpty.value }"
-        type="password"
-      />
-      <div>
-        <button class="loginButton" @click="logInHandler()">Login</button>
-      </div>
-      <div class="putTest">
-        <button class="loginButton" @click="updateHandler()">Put</button>
-      </div>
+      <form @submit.prevent="logInHandler" class="mt-10">
+        <input
+          v-model="userName"
+          type="text"
+          placeholder="ユーザ名"
+          autocomplete="true"
+          required
+          autofocus
+          class="w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
+        />
+        <input
+          v-model="password"
+          type="password"
+          placeholder="パスワード"
+          class="mt-2 w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
+        />
+        <div>
+          <button
+            type="submit"
+            class="mt-9 w-full rounded-lg bg-green-500 px-4 py-3 font-semibold text-white hover:bg-green-400 focus:bg-white"
+          >
+            Login
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
-<style scoped lang="scss">
-.putTest {
-  margin-top: 10px;
-}
-.loginArea {
-  display: flex;
-  justify-content: center;
-}
-
-.loginInfo {
-  border: 2px solid;
-  border-radius: 10px;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  width: 250px;
-}
-
-.inputTitle {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.errorText {
-  color: red;
-}
-
-.errorState {
-  border: 2px solid red;
-}
-</style>

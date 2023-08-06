@@ -12,6 +12,18 @@ TODO
 
 Vue3（Composition API） と Nuxt を身につけるように tekken-frame-data （[tekken-frame-data フロントエンド](https://github.com/PerryM123/tekken-frame-data) と [tekken-frame-data バックエンド](https://github.com/PerryM123/tekken-frame-data-backend)） の管理画面を実装しました。
 
+## Tailwind CSS IntelliSenseについて
+
+vscodeを使ってる人はTailwindの入力支援が効くようにsettings.jsonに以下を追加してくさい。
+
+```
+"editor.quickSuggestions": {
+  "strings": true
+},
+"css.validate": false,
+"editor.inlineSuggest.enabled": true
+```
+
 ## Getting Started
 
 ```
