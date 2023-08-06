@@ -53,11 +53,8 @@ const logOutClickHandler = async () => {
       </template>
       <template v-else>
         <li>
-          <NuxtLink
-            :to="`${PAGE_URL.LOGIN}`"
-            class="p-3 font-bold hover:text-green-500"
-          >
-            👍Login
+          <NuxtLink :to="`${PAGE_URL.LOGIN}`">
+            <div class="p-3 font-bold hover:text-green-500">👍Login</div>
           </NuxtLink>
         </li>
       </template>
