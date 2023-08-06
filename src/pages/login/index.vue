@@ -3,5 +3,4 @@
     <Title>Login</Title>
   </Head>
   <LoginArea />
-  <EditUserInfo />
 </template>
