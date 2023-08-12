@@ -1,4 +1,3 @@
-<script lang="ts" setup></script>
 <template>
   <div
     class="fixed bottom-0 z-10 h-16 w-full bg-gray-800 shadow-xl md:h-screen md:w-48"
@@ -10,55 +9,50 @@
         class="list-reset flex flex-row px-1 py-0 text-center md:flex-col md:px-2 md:py-3 md:text-left"
       >
         <li class="mr-3 flex-1">
-          <a
-            href="#"
-            class="block border-b-2 border-gray-800 py-1 pl-1 align-middle text-white no-underline hover:border-pink-500 hover:text-white md:py-3"
+          <NuxtLink
+            :class="styleCurrentPage(isHomePage)"
+            :to="`${PAGE_URL.HOME}`"
           >
-            <i class="fas fa-tasks pr-0 md:pr-3"></i
-            ><span
-              class="block pb-1 text-xs text-gray-600 md:inline-block md:pb-0 md:text-base md:text-gray-400"
-              >Tasks</span
-            >
-          </a>
+            Home
+          </NuxtLink>
         </li>
         <li class="mr-3 flex-1">
-          <a
-            href="#"
-            class="block border-b-2 border-gray-800 py-1 pl-1 align-middle text-white no-underline hover:border-purple-500 hover:text-white md:py-3"
+          <NuxtLink
+            :class="styleCurrentPage(isUserPage)"
+            :to="`${PAGE_URL.USER}`"
           >
-            <i class="fa fa-envelope pr-0 md:pr-3"></i
-            ><span
-              class="block pb-1 text-xs text-gray-600 md:inline-block md:pb-0 md:text-base md:text-gray-400"
-              >Messages</span
-            >
-          </a>
+            User
+          </NuxtLink>
         </li>
         <li class="mr-3 flex-1">
-          <a
-            href="#"
-            class="block border-b-2 border-blue-600 py-1 pl-1 align-middle text-white no-underline hover:text-white md:py-3"
+          <NuxtLink
+            :class="styleCurrentPage(isCharacterInfoPage)"
+            :to="`${PAGE_URL.CHARACTER_INFO}`"
           >
-            <i class="fas fa-chart-area pr-0 text-blue-600 md:pr-3"></i
-            ><span
-              class="block pb-1 text-xs text-white md:inline-block md:pb-0 md:text-base md:text-white"
-              >Analytics</span
-            >
-          </a>
+            Character Info
+          </NuxtLink>
         </li>
         <li class="mr-3 flex-1">
-          <a
-            href="#"
-            class="block border-b-2 border-gray-800 py-1 pl-0 align-middle text-white no-underline hover:border-red-500 hover:text-white md:py-3 md:pl-1"
+          <NuxtLink
+            :class="styleCurrentPage(isVideoCallPage)"
+            :to="`${PAGE_URL.VIDEO_CALL}`"
           >
-            <i class="fa fa-wallet pr-0 md:pr-3"></i
-            ><span
-              class="block pb-1 text-xs text-gray-600 md:inline-block md:pb-0 md:text-base md:text-gray-400"
-              >Payments</span
-            >
-          </a>
+            ビデオ通話
+          </NuxtLink>
         </li>
       </ul>
     </div>
   </div>
 </template>
+<script lang="ts" setup>
+import useCurrentPage from '~/composables/useCurrentPage';
+
+const styleCurrentPage = (isCurrentPage: boolean) => {
+  return `${generalStyle} ${isCurrentPage ? 'border-pink-500 text-white' : ''}`;
+};
+const { isHomePage, isUserPage, isCharacterInfoPage, isVideoCallPage } =
+  useCurrentPage();
+const generalStyle =
+  'block border-b-2 border-gray-800 py-1 pl-1 align-middle text-white no-underline hover:border-green-500 hover:text-white md:py-3';
+</script>
 <style scoped lang="scss"></style>

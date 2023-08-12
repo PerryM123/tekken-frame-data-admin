@@ -16,38 +16,6 @@ const logOutClickHandler = async () => {
   >
     <img src="/logo.png" width="60" class="hover:opacity-80" />
     <ul class="flex justify-between">
-      <li>
-        <NuxtLink
-          class="block p-3 font-bold hover:text-green-500"
-          :to="`${PAGE_URL.HOME}`"
-        >
-          Home
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          class="block p-3 font-bold hover:text-green-500"
-          :to="`${PAGE_URL.USER}`"
-        >
-          User
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          class="block p-3 font-bold hover:text-green-500"
-          :to="`${PAGE_URL.CHARACTER_INFO}`"
-        >
-          Character Info
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink
-          class="block p-3 font-bold hover:text-green-500"
-          :to="`${PAGE_URL.VIDEO_CALL}`"
-        >
-          ビデオ通話
-        </NuxtLink>
-      </li>
       <template v-if="isLoggedIn">
         <li @click="logOutClickHandler()">
           <div class="p-3 font-bold hover:text-green-500">✋Log Out</div>

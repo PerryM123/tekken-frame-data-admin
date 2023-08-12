@@ -12,6 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
+const { $publicApi } = useNuxtApp();
 const userName = ref<string>('');
 const password = ref<string>('');
 const errorMessage = ref<string>('');
@@ -49,9 +50,9 @@ const logInHandler = async () => {
       };
       await sleep(1000);
 
-      const { data } = await useFetch('/api/login', {
-        method: 'POST',
-        body: { userName, password }
+      const { data } = await $publicApi.post('/api/login', {
+        userName,
+        password
       });
       if (data.value) {
         const userInfoResponse: IUserInfo = {
@@ -128,7 +129,7 @@ const onTextChange = () => {
           <div>
             <button
               type="submit"
-              class="mt-9 w-full rounded-lg bg-green-500 px-4 py-3 font-semibold text-white hover:bg-green-400 focus:bg-white"
+              class="mt-9 w-full rounded-lg bg-green-500 px-4 py-3 font-semibold text-white hover:bg-green-400"
             >
               Login
             </button>
