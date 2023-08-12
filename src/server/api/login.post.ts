@@ -24,16 +24,6 @@ export default defineEventHandler(async (event: H3Event) => {
   const config = useRuntimeConfig();
   const sessionId = uuid();
   const signedSessionId = sign(sessionId, config.cookieSecret);
-
-  // clientクッキー作成
-  setCookie(event, config.public.cookieName, signedSessionId, {
-    httpOnly: true,
-    path: '/',
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-    expires: new Date(Date.now() + config.sessionExpires * 1000)
-  });
-
   const body = await readBody<{
     userName: string;
     password: string;
@@ -98,6 +88,15 @@ export default defineEventHandler(async (event: H3Event) => {
       role: userMeData.roleId
     };
 
+    // clientクッキー作成
+    setCookie(event, config.public.cookieName, signedSessionId, {
+      httpOnly: true,
+      path: '/',
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      expires: new Date(Date.now() + config.sessionExpires * 1000)
+    });
+
     return {
       ...userInfo
     };
@@ -109,8 +108,8 @@ export default defineEventHandler(async (event: H3Event) => {
     };
 
     throw createError({
-      statusCode: 401,
-      message: 'Bad credentials'
+      statusCode: 400,
+      message: 'Bad Request'
     });
   }
 });
