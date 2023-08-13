@@ -1,10 +1,6 @@
 import { unsign } from 'cookie-signature';
 
 export default defineEventHandler(async (event) => {
-  console.log(
-    `[${process.server ? 'server' : 'client'}]test.get cookie: `,
-    event.node.req.headers.cookie
-  );
   const config = useRuntimeConfig();
   const cookies = parseCookies(event);
 

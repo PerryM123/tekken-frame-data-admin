@@ -50,21 +50,22 @@ const logInHandler = async () => {
       };
       await sleep(1000);
 
-      const { data } = await $publicApi.post('/api/login', {
-        userName,
-        password
+      const { data } = await $publicApi.post<IUserInfo>('/api/login', {
+        userName: userName.value,
+        password: password.value
       });
-      if (data.value) {
+      console.log('the data: ', data);
+      if (data) {
         const userInfoResponse: IUserInfo = {
-          name: data.value?.name,
-          id: data.value?.id,
-          accountCreatedDate: data.value?.accountCreatedDate,
-          birthDay: data.value?.birthDay,
-          birthMonth: data.value?.birthMonth,
-          birthYear: data.value?.birthYear,
-          email: data.value?.email,
-          phoneNumber: data.value?.phoneNumber,
-          role: data.value?.role
+          name: data?.name,
+          id: data?.id,
+          accountCreatedDate: data?.accountCreatedDate,
+          birthDay: data?.birthDay,
+          birthMonth: data?.birthMonth,
+          birthYear: data?.birthYear,
+          email: data?.email,
+          phoneNumber: data?.phoneNumber,
+          role: data?.role
         };
         const userMeStore = useUserMeStore();
         const { setUserInfo } = userMeStore;

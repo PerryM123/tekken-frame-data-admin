@@ -5,13 +5,7 @@ import { backendApiUrl, sercetApiKey } from '../../utils/runtimeConfig';
 import type { H3Event } from 'h3';
 import { uuid } from 'uuidv4';
 import { IUserInfo } from 'interface/IUserInfo';
-
-interface ILoginApi {
-  isSuccess?: boolean;
-  userId?: number;
-  statusCode?: number;
-  message?: string;
-}
+import { ILoginApi } from 'interface/ILoginApi';
 
 interface IUserMeApi {
   userId: number;
@@ -70,7 +64,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     // redisセッション作成
     // TODO: Nitroにて他のNitro APIを叩くのは大丈夫かな、、、
-    const data = await $fetch<ISessionPostApi>('/api/session', {
+    await $fetch<ISessionPostApi>('/api/session', {
       method: 'POST',
       body: {
         id: userMeData.userId,
