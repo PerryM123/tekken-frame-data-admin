@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useCharacterInfoStore } from '~/store/characterInfo';
 import { Ref, ref } from 'vue';
-import { ICharacterInfoApi } from '~/interface/ICharacterInfo';
+import { ICharacterInfoData } from '~/interface/ICharacterInfo';
 
 const { $publicApi } = useNuxtApp();
 const characterInfoStore = useCharacterInfoStore();
@@ -10,10 +10,10 @@ const { setCharacterInfo, setIsLoaded } = characterInfoStore;
 const { characterInfo, isLoaded } = storeToRefs(characterInfoStore);
 if (!isLoaded.value) {
   // TODO: もしAPI通信エラーなどが発生する場合、どこでcatchされるか確認必須
-  const { data }: ICharacterInfoApi = await $publicApi.get(
+  const response = await $publicApi.get<ICharacterInfoData[]>(
     '/api/framedata/characters'
   );
-  setCharacterInfo(data);
+  setCharacterInfo(response.data);
   setIsLoaded(true);
 }
 </script>
@@ -23,6 +23,9 @@ if (!isLoaded.value) {
     <p>
       <span class="characterName">Is Complete:</span>
       {{ Boolean(item.isComplete) }}
+    </p>
+    <p>
+      <span class="characterName">description:</span> {{ item.description }}
     </p>
   </div>
 </template>

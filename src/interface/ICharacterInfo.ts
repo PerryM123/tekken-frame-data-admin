@@ -1,8 +1,15 @@
 export type ICharacterInfoData = {
   name: string;
   isComplete: boolean;
+  description: string;
+};
+
+export type ICharacterInfoListApi = {
+  data: ICharacterInfoData[];
 };
 
 export type ICharacterInfoApi = {
-  data: ICharacterInfoData[];
+  name: string;
+  is_completed: boolean;
+  description: string;
 };
