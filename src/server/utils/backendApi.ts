@@ -24,9 +24,8 @@ type Method =
   | 'UNLINK';
 
 // TODO: backendApiはurlとmethodの引数でいいのかそれともAxiosRequestConfigのobjectにするか検討必須
-export const backendApi = (url: string, method: Method) => {
-  console.log('--test: backendApi');
-  return axios.request({
+export const backendApi = <T>(url: string, method: Method) => {
+  return axios.request<T>({
     url: url,
     baseURL: backendApiUrl,
     method: method,
