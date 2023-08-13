@@ -18,13 +18,19 @@ const logOutClickHandler = async () => {
     <ul class="flex justify-between">
       <template v-if="isLoggedIn">
         <li @click="logOutClickHandler()">
-          <div class="p-3 font-bold hover:text-green-500">✋Log Out</div>
+          <div class="p-3 font-bold hover:cursor-pointer hover:text-green-500">
+            ✋Log Out
+          </div>
         </li>
       </template>
       <template v-else>
         <li>
           <NuxtLink :to="`${PAGE_URL.LOGIN}`">
-            <div class="p-3 font-bold hover:text-green-500">👍Login</div>
+            <div
+              class="p-3 font-bold hover:cursor-pointer hover:text-green-500"
+            >
+              👍Login
+            </div>
           </NuxtLink>
         </li>
       </template>
