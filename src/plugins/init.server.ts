@@ -25,13 +25,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   const token = cookieFromRequestHeaders(config.public.cookieName);
   if (token.length) {
+    console.log('BEFORE init.server: api/session');
     const { data: userMeData } = await useFetch<ISessionGetApi>(
       '/api/session',
       {
         method: 'get'
       }
     );
-    // TODO: piniaエラー対応必須
+    // TODO: piniaエラー対応必須。対応するまでts-ignoreをつける
+    // @ts-ignore
     const userMe = useUserMeStore(nuxtApp.$pinia);
     const { setUserInfo } = userMe;
     let role = getRoleType(userMeData.value?.role);
