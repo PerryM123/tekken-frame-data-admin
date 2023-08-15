@@ -101,7 +101,7 @@ const onTextChange = () => {
 </script>
 <template>
   <div class="mt-[120px]">
-    <div class="flex justify-center">
+    <div class="flex justify-center px-10">
       <div
         class="mt-10 w-[400px] rounded-lg border-2 border-solid border-[#dddddd] px-4 py-9"
       >
