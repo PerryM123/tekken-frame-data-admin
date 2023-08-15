@@ -8,6 +8,7 @@ const logOutClickHandler = async () => {
   // client側のクッキーを削除
   useCookie(config.public.cookieName).value = null;
   logout();
+  navigateTo(PAGE_URL.LOGIN);
 };
 </script>
 <template>
