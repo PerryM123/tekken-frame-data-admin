@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed bottom-0 z-10 h-16 w-full bg-gray-800 shadow-xl md:h-screen md:w-48"
+    class="fixed bottom-0 z-10 hidden h-screen w-48 bg-gray-800 shadow-xl md:block"
   >
     <div
       class="content-center justify-between text-left md:fixed md:left-0 md:top-10 md:mt-12 md:w-48 md:content-start"
