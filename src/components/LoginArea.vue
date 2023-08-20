@@ -22,6 +22,7 @@ const errorInfo = {
   isIncorrectPassword: ref<boolean>(false)
 };
 const isLoading = ref<boolean>(false);
+const isRedirectingAfterLogin = ref<boolean>(false);
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
@@ -67,6 +68,7 @@ const logInHandler = async () => {
           phoneNumber: data?.phoneNumber,
           role: data?.role
         };
+        isRedirectingAfterLogin.value = true;
         const userMeStore = useUserMeStore();
         const { setUserInfo } = userMeStore;
         setUserInfo(userInfoResponse);
@@ -102,7 +104,9 @@ const onTextChange = () => {
 <template>
   <div class="mt-[120px]">
     <div class="flex justify-center px-10">
+      <img v-if="isLoading || isRedirectingAfterLogin" src="loading.gif" />
       <div
+        v-else
         class="mt-10 w-[400px] rounded-lg border-2 border-solid border-[#dddddd] px-4 py-9"
       >
         <h1
