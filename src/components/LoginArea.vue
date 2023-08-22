@@ -60,12 +60,7 @@ const logInHandler = async () => {
         const userInfoResponse: IUserInfo = {
           name: data?.name,
           id: data?.id,
-          accountCreatedDate: data?.accountCreatedDate,
-          birthDay: data?.birthDay,
-          birthMonth: data?.birthMonth,
-          birthYear: data?.birthYear,
           email: data?.email,
-          phoneNumber: data?.phoneNumber,
           role: data?.role
         };
         isRedirectingAfterLogin.value = true;
