@@ -1,4 +1,5 @@
 import { unsign } from 'cookie-signature';
+import { PUBLIC_API_URL } from '~/utils/constants';
 import { useUserMeStore } from '~/store/userMe';
 
 function cookieFromRequestHeaders(key: string) {
@@ -26,12 +27,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const token = cookieFromRequestHeaders(config.public.cookieName);
   if (token.length) {
     const { data: userMeData } = await useFetch<ISessionGetApi>(
-      '/api/session',
+      PUBLIC_API_URL.SESSION,
       {
         method: 'get'
       }
     );
-    // TODO: piniaエラー対応必須
+    // TODO: piniaエラー対応必須。対応するまでts-ignoreをつける
+    // @ts-ignore
     const userMe = useUserMeStore(nuxtApp.$pinia);
     const { setUserInfo } = userMe;
     let role = getRoleType(userMeData.value?.role);

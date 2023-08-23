@@ -2,6 +2,7 @@
 import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
 import { IUserInfo } from 'interface/IUserInfo';
+import { PUBLIC_API_URL } from '~/utils/constants';
 
 interface Props {
   name?: string;
@@ -12,6 +13,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
+const { $publicApi } = useNuxtApp();
 const userName = ref<string>('');
 const password = ref<string>('');
 const errorMessage = ref<string>('');
@@ -21,6 +23,7 @@ const errorInfo = {
   isIncorrectPassword: ref<boolean>(false)
 };
 const isLoading = ref<boolean>(false);
+const isRedirectingAfterLogin = ref<boolean>(false);
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
@@ -49,22 +52,18 @@ const logInHandler = async () => {
       };
       await sleep(1000);
 
-      const { data } = await useFetch('/api/login', {
-        method: 'POST',
-        body: { userName, password }
+      const { data } = await $publicApi.post<IUserInfo>(PUBLIC_API_URL.LOGIN, {
+        userName: userName.value,
+        password: password.value
       });
-      if (data.value) {
+      if (data) {
         const userInfoResponse: IUserInfo = {
-          name: data.value?.name,
-          id: data.value?.id,
-          accountCreatedDate: data.value?.accountCreatedDate,
-          birthDay: data.value?.birthDay,
-          birthMonth: data.value?.birthMonth,
-          birthYear: data.value?.birthYear,
-          email: data.value?.email,
-          phoneNumber: data.value?.phoneNumber,
-          role: data.value?.role
+          name: data?.name,
+          id: data?.id,
+          email: data?.email,
+          role: data?.role
         };
+        isRedirectingAfterLogin.value = true;
         const userMeStore = useUserMeStore();
         const { setUserInfo } = userMeStore;
         setUserInfo(userInfoResponse);
@@ -98,64 +97,45 @@ const onTextChange = () => {
 };
 </script>
 <template>
-  <div class="loginArea">
-    <template v-if="!isLoading">
-      <div class="loginInfo">
-        <h1>Admin Login</h1>
+  <div class="mt-[120px]">
+    <div class="flex justify-center px-10">
+      <img v-if="isLoading || isRedirectingAfterLogin" src="loading.gif" />
+      <div
+        v-else
+        class="mt-10 w-[400px] rounded-lg border-2 border-solid border-[#dddddd] px-4 py-9"
+      >
+        <h1
+          class="mb-4 text-center text-3xl leading-none tracking-tight text-gray-900"
+        >
+          ログイン画面
+        </h1>
         <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
-        <p class="inputTitle">User Name</p>
-        <form @submit="logInHandler">
+        <form @submit.prevent="logInHandler" class="mt-10">
           <input
             v-model="userName"
-            @input="onTextChange"
-            :class="{ errorState: errorInfo.isUserNameEmpty.value }"
             type="text"
+            placeholder="ユーザ名"
+            autocomplete="true"
+            required
+            autofocus
+            class="w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
           />
-          <p class="inputTitle">Password</p>
           <input
             v-model="password"
-            @input="onTextChange"
-            :class="{ errorState: errorInfo.isPasswordEmpty.value }"
             type="password"
+            placeholder="パスワード"
+            class="mt-2 w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
           />
           <div>
-            <button class="loginButton" type="submit">Login</button>
+            <button
+              type="submit"
+              class="mt-9 w-full rounded-lg bg-green-500 px-4 py-3 font-semibold text-white hover:bg-green-400"
+            >
+              Login
+            </button>
           </div>
         </form>
       </div>
-    </template>
-    <template v-else>
-      <img src="/loading.gif" />
-    </template>
+    </div>
   </div>
 </template>
-<style scoped lang="scss">
-.putTest {
-  margin-top: 10px;
-}
-.loginArea {
-  display: flex;
-  justify-content: center;
-}
-
-.loginInfo {
-  border: 2px solid;
-  border-radius: 10px;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  width: 250px;
-}
-
-.inputTitle {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.errorText {
-  color: red;
-}
-
-.errorState {
-  border: 2px solid red;
-}
-</style>

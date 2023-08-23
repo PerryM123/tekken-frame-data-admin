@@ -73,9 +73,11 @@ peer.on('call', (mediaConnection) => {
 });
 onUnmounted(() => {
   // unmountedとなったら発信を停止
-  localStream.getTracks().forEach(function (track) {
-    track.stop();
-  });
+  if (localStream) {
+    localStream.getTracks().forEach(function (track) {
+      track.stop();
+    });
+  }
 });
 </script>
 <template>

@@ -14,6 +14,18 @@ Vue3（Composition API） と Nuxt3 を身につけるように tekken-frame-dat
 
 # Getting Started
 
+## Tailwind CSS IntelliSenseについて
+
+vscodeを使ってる人はTailwindの入力支援が効くようにsettings.jsonに以下を追加してくさい。
+
+```
+"editor.quickSuggestions": {
+  "strings": true
+},
+"css.validate": false,
+"editor.inlineSuggest.enabled": true
+```
+
 ## Installing Node Version Manager (nvm)
 
 Source: https://github.com/nvm-sh/nvm#installing-and-updating
