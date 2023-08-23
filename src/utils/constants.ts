@@ -1,3 +1,16 @@
+export const PUBLIC_API_URL = {
+  SESSION: '/api/session',
+  CHARACTERS: '/api/framedata/characters',
+  LOGIN: '/api/login',
+  LOGOUT: '/api/logout'
+} as const;
+
+export const BACKEND_API_URL = {
+  LOGIN: '/api/v1/login',
+  CHARACTERS: '/api/v1/characters',
+  ME: '/api/v1/me'
+} as const;
+
 export const PAGE_URL = {
   HOME: '/',
   USER: '/user',

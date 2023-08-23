@@ -6,6 +6,7 @@ import type { H3Event } from 'h3';
 import { uuid } from 'uuidv4';
 import { IUserInfo } from 'interface/IUserInfo';
 import { ILoginApi } from 'interface/ILoginApi';
+import { PUBLIC_API_URL, BACKEND_API_URL } from '~/utils/constants';
 
 interface IUserMeApi {
   userId: number;
@@ -31,17 +32,20 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const loginData = await $fetch<ILoginApi>(`${backendApiUrl}/api/v1/login`, {
-      method: 'POST',
-      body: {
-        userName,
-        password
-      },
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': sercetApiKey || ''
+    const loginData = await $fetch<ILoginApi>(
+      `${backendApiUrl}${BACKEND_API_URL.LOGIN}`,
+      {
+        method: 'POST',
+        body: {
+          userName,
+          password
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': sercetApiKey || ''
+        }
       }
-    });
+    );
 
     if (loginData.statusCode) {
       throw createError({
@@ -51,7 +55,7 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
     const userMeData = await $fetch<IUserMeApi>(
-      `${backendApiUrl}/api/v1/me/${loginData.userId}`,
+      `${backendApiUrl}${BACKEND_API_URL.ME}/${loginData.userId}`,
       {
         method: 'GET',
         headers: {
@@ -64,7 +68,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
     // redisセッション作成
     // TODO: Nitroにて他のNitro APIを叩くのは大丈夫かな、、、
-    await $fetch<ISessionPostApi>('/api/session', {
+    await $fetch<ISessionPostApi>(PUBLIC_API_URL.SESSION, {
       method: 'POST',
       body: {
         id: userMeData.userId,
@@ -87,8 +91,9 @@ export default defineEventHandler(async (event: H3Event) => {
       httpOnly: true,
       path: '/',
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
-      expires: new Date(Date.now() + config.sessionExpires * 1000)
+      secure: process.env.NODE_ENV === 'production'
+      // TODO: cookieの有効期限は修正必須
+      // expires: new Date(Date.now() + config.sessionExpires)
     });
 
     return {

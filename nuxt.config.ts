@@ -1,4 +1,5 @@
 const ONE_MINUTE = 60;
+const ONE_DAY = 1440 * ONE_MINUTE;
 const MINUTES = 5;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,7 +19,7 @@ export default defineNuxtConfig({
     sercetApiKey: process.env.SECRET_API_KEY || '',
     cookieSecret: process.env.COOKIE_SECRET || '',
     redisUrl: process.env.SESSION_REDIS_URL || '',
-    sessionExpires: 60 * MINUTES,
+    sessionExpires: ONE_DAY,
     sessionIdPrefix: process.env.SESSION_ID_PREFIX || 'redisPrefix_',
     // SSR＆CSR側
     public: {
@@ -34,7 +35,7 @@ export default defineNuxtConfig({
         driver: 'redis',
         port: process.env.SESSION_REDIS_PORT,
         host: process.env.SESSION_REDIS_HOST,
-        ttl: ONE_MINUTE * 5 // 5分
+        ttl: ONE_DAY
       }
     }
   },

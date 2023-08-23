@@ -83,13 +83,15 @@
   </nav>
 </template>
 <script setup lang="ts">
+import { PUBLIC_API_URL } from '~/utils/constants';
+
 const { logout, isLoggedIn } = useUserInfo();
 const config = useRuntimeConfig();
 const isMenuOpen = ref(false);
 
 const logOutClickHandler = async () => {
   const { $publicApi } = useNuxtApp();
-  const { data } = await $publicApi.post('/api/logout');
+  const { data } = await $publicApi.post(PUBLIC_API_URL.LOGOUT);
   // client側のクッキーを削除
   useCookie(config.public.cookieName).value = null;
   // ログアウト処理を行う

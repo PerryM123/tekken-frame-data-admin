@@ -6,12 +6,12 @@ import {
   ICharacterInfoApi,
   ICharacterInfoData
 } from 'interface/ICharacterInfo';
+import { BACKEND_API_URL } from '~/utils/constants';
 
 export default defineEventHandler(async (event) => {
   try {
     const response = await backendApi<ICharacterInfoApi[]>(
-      // TODO: backendのURLのconstantが必要
-      '/api/v1/characters',
+      BACKEND_API_URL.CHARACTERS,
       'GET'
     );
     const characterInfoData: ICharacterInfoData[] = [
@@ -26,12 +26,21 @@ export default defineEventHandler(async (event) => {
     return [...characterInfoData];
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('error message: ', error.message);
-      return error.message;
+      throw createError({
+        statusCode: error.response?.status,
+        statusMessage: error.message,
+        data: {
+          errorCode: 'ERR_CHAR_GET_1'
+        }
+      });
     } else {
-      console.log('unexpected error: ', error);
-      return 'An unexpected error occurred';
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'An unexpected error occurred',
+        data: {
+          errorCode: 'ERR_CHAR_GET_2'
+        }
+      });
     }
   }
-  // TODO: デフォルトreturnは必須
 });

@@ -1,4 +1,5 @@
 import { unsign } from 'cookie-signature';
+import { PUBLIC_API_URL } from '~/utils/constants';
 import { useUserMeStore } from '~/store/userMe';
 
 function cookieFromRequestHeaders(key: string) {
@@ -25,9 +26,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig();
   const token = cookieFromRequestHeaders(config.public.cookieName);
   if (token.length) {
-    console.log('BEFORE init.server: api/session');
     const { data: userMeData } = await useFetch<ISessionGetApi>(
-      '/api/session',
+      PUBLIC_API_URL.SESSION,
       {
         method: 'get'
       }

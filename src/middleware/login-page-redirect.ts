@@ -1,3 +1,4 @@
+import { PUBLIC_API_URL } from '~/utils/constants';
 import { useUserMeStore } from '~/store/userMe';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
@@ -18,7 +19,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   );
   // TODO: api/sessionが二回送信、、、
   const { data } = await $publicApi.get<ISessionGetApi>(
-    '/api/session',
+    PUBLIC_API_URL.SESSION,
     process.server
       ? {
           headers: { cookie: `${config.public.cookieName}=${cookie.value}` }

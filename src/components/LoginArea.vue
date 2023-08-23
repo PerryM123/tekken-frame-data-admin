@@ -2,6 +2,7 @@
 import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
 import { IUserInfo } from 'interface/IUserInfo';
+import { PUBLIC_API_URL } from '~/utils/constants';
 
 interface Props {
   name?: string;
@@ -51,11 +52,10 @@ const logInHandler = async () => {
       };
       await sleep(1000);
 
-      const { data } = await $publicApi.post<IUserInfo>('/api/login', {
+      const { data } = await $publicApi.post<IUserInfo>(PUBLIC_API_URL.LOGIN, {
         userName: userName.value,
         password: password.value
       });
-      console.log('the data: ', data);
       if (data) {
         const userInfoResponse: IUserInfo = {
           name: data?.name,
