@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useUserMeStore } from '~/store/userMe';
 import { ref } from 'vue';
+import { IUserInfo } from 'interface/IUserInfo';
+import { PUBLIC_API_URL } from '~/utils/constants';
 
 interface Props {
   name?: string;
@@ -10,14 +13,17 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   name: 'defaultName'
 });
-const userName = ref('');
-const password = ref('');
-const errorMessage = ref('');
+const { $publicApi } = useNuxtApp();
+const userName = ref<string>('');
+const password = ref<string>('');
+const errorMessage = ref<string>('');
 const errorInfo = {
-  isUserNameEmpty: ref(false),
-  isPasswordEmpty: ref(false),
-  isIncorrectPassword: ref(false)
+  isUserNameEmpty: ref<boolean>(false),
+  isPasswordEmpty: ref<boolean>(false),
+  isIncorrectPassword: ref<boolean>(false)
 };
+const isLoading = ref<boolean>(false);
+const isRedirectingAfterLogin = ref<boolean>(false);
 
 const resetErrorInfo = () => {
   errorInfo.isUserNameEmpty.value = false;
@@ -36,29 +42,42 @@ const logInHandler = async () => {
   }
 
   if (!errorInfo.isUserNameEmpty.value && !errorInfo.isPasswordEmpty.value) {
-    console.log('submit ok!!!');
     try {
-      const { data, pending, error, refresh } = await useFetch('/api/login', {
-        method: 'POST',
-        body: { userName, password }
+      isLoading.value = true;
+      // TODO: 仮のコードです。動作確認が終わり次第、以下のsleep関数を削除
+      const sleep = (ms: number) => {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      };
+      await sleep(1000);
+
+      const { data } = await $publicApi.post<IUserInfo>(PUBLIC_API_URL.LOGIN, {
+        userName: userName.value,
+        password: password.value
       });
+      if (data) {
+        const userInfoResponse: IUserInfo = {
+          name: data?.name,
+          id: data?.id,
+          email: data?.email,
+          role: data?.role
+        };
+        isRedirectingAfterLogin.value = true;
+        const userMeStore = useUserMeStore();
+        const { setUserInfo } = userMeStore;
+        setUserInfo(userInfoResponse);
+        const redirectTo = useRoute().redirectedFrom?.path || PAGE_URL.USER;
+        useRouter().push(redirectTo);
+      } else {
+        errorMessage.value = '認証できませんでした';
+      }
     } catch (e) {
       console.log('e: ', e);
     }
+    isLoading.value = false;
   }
   setErrorText();
-};
-
-const updateHandler = async () => {
-  console.log('---test: updateHandler');
-  const { data, pending, error, refresh } = await useFetch(
-    '/api/framedata/characters/newNameAGAIN',
-    {
-      method: 'PUT',
-      body: { name: 'destiny2' },
-      credentials: 'include'
-    }
-  );
 };
 
 const setErrorText = () => {
@@ -72,60 +91,51 @@ const setErrorText = () => {
     errorMessage.value = 'パスワードは一致していません！';
   }
 };
+
+const onTextChange = () => {
+  resetErrorInfo();
+};
 </script>
 <template>
-  <div class="loginArea">
-    <div class="loginInfo">
-      <h1>Admin Login</h1>
-      <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
-      <p class="inputTitle">User Name</p>
-      <input
-        v-model="userName"
-        :class="{ errorState: errorInfo.isUserNameEmpty.value }"
-        type="text"
-      />
-      <p class="inputTitle">Password</p>
-      <input
-        v-model="password"
-        :class="{ errorState: errorInfo.isPasswordEmpty.value }"
-        type="password"
-      />
-      <div>
-        <button class="loginButton" @click="logInHandler()">Login</button>
-      </div>
-      <div class="putTest">
-        <button class="loginButton" @click="updateHandler()">Put</button>
+  <div class="mt-[120px]">
+    <div class="flex justify-center px-10">
+      <img v-if="isLoading || isRedirectingAfterLogin" src="loading.gif" />
+      <div
+        v-else
+        class="mt-10 w-[400px] rounded-lg border-2 border-solid border-[#dddddd] px-4 py-9"
+      >
+        <h1
+          class="mb-4 text-center text-3xl leading-none tracking-tight text-gray-900"
+        >
+          ログイン画面
+        </h1>
+        <p v-if="errorMessage.length" class="errorText">*{{ errorMessage }}</p>
+        <form @submit.prevent="logInHandler" class="mt-10">
+          <input
+            v-model="userName"
+            type="text"
+            placeholder="ユーザ名"
+            autocomplete="true"
+            required
+            autofocus
+            class="w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
+          />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="パスワード"
+            class="mt-2 w-full rounded-lg bg-[#e7f1fd] px-4 py-3 focus:bg-white"
+          />
+          <div>
+            <button
+              type="submit"
+              class="mt-9 w-full rounded-lg bg-green-500 px-4 py-3 font-semibold text-white hover:bg-green-400"
+            >
+              Login
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
-<style scoped lang="scss">
-.putTest {
-  margin-top: 10px;
-}
-.loginArea {
-  display: flex;
-  justify-content: center;
-}
-
-.loginInfo {
-  border: 2px solid;
-  border-radius: 10px;
-  padding: 30px 30px;
-  box-sizing: border-box;
-  width: 250px;
-}
-
-.inputTitle {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.errorText {
-  color: red;
-}
-
-.errorState {
-  border: 2px solid red;
-}
-</style>
