@@ -2,21 +2,27 @@
 
 ## なぜ作ってるか
 
-TODO
+[Tekken Frame Data (NextJs)](https://github.com/PerryM123/tekken-frame-data) は鉄拳 7 のフレーム表にて表示されてますが [Tekken Frame Data Admin (Nuxt3)](https://github.com/PerryM123/tekken-frame-data-admin) はそのフレームデータを管理する CMS 側です。
+
+基本、Tekken Frame Data Admin は SSR 側で [Tekken Frame Data Backend （Express + TypeORM）](https://github.com/PerryM123/tekken-frame-data-backend) のエンドポイントを叩いて鉄拳 7 フレーム情報を取得・追加・削除などをしてます。
+
+![alt text](./readme/video.gif)
 
 ## 機能一覧
 
-TODO
+- SSR 側で[バックエンド](https://github.com/PerryM123/tekken-frame-data-backend)を触れる
+- ユーザセッション管理　(Redis)
+- Tailwind CSS で見た目を実装
 
 ## 目的
 
-Vue3（Composition API） と Nuxt3 を身につけるように tekken-frame-data （[tekken-frame-data フロントエンド](https://github.com/PerryM123/tekken-frame-data) と [tekken-frame-data バックエンド](https://github.com/PerryM123/tekken-frame-data-backend)） の管理画面を実装しました。
+Vue3 と Nuxt3 を身につけるように tekken-frame-data （[tekken-frame-data フロントエンド](https://github.com/PerryM123/tekken-frame-data) と [tekken-frame-data バックエンド](https://github.com/PerryM123/tekken-frame-data-backend)） の管理画面を実装しました。
 
 # Getting Started
 
-## Tailwind CSS IntelliSenseについて
+## Tailwind CSS IntelliSense について
 
-vscodeを使ってる人はTailwindの入力支援が効くようにsettings.jsonに以下を追加してくさい。
+vscode を使ってる人は Tailwind の入力支援が効くように settings.json に以下を追加してくさい。
 
 ```
 "editor.quickSuggestions": {
@@ -30,12 +36,11 @@ vscodeを使ってる人はTailwindの入力支援が効くようにsettings.jso
 
 Source: https://github.com/nvm-sh/nvm#installing-and-updating
 
-### 1. nvmインストール
+### 1. nvm インストール
 
-`$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash` でnvmをインストール
+`$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash` で nvm をインストール
 
-
-### 2. .bashrcに以下のコードを追加
+### 2. .bashrc に以下のコードを追加
 
 ```
 cdnvm() {
@@ -85,18 +90,19 @@ alias cd='cdnvm'
 cdnvm "$PWD" || exit
 ```
 
-### 3. nvmでnodeバージョンを導入
+### 3. nvm で node バージョンを導入
 
 ```
 $ nvm install 18.3.0
 ```
 
 ## Running local
+
 ```
 $ git clone git@github.com:PerryM123/tekken-frame-data-admin.git
 $ cd tekken-frame-data-admin
 $ yarn
-$ yarn dev
+$ yarn local
 ```
 
 ## Techonogies being used
